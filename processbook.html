@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Visualization - US Leading Cause Of Deaths</title>
+</head>
+
+<body>
+
+<h1>Leading Causes of Deaths in US</h1>
+<p class="info">Name: Yishan Chen; E-Mail: ychen60@wustl.edu; UID: 454874</p>
+<p class="info">Name: Jin Yang; E-Mail: yang.jin@wustl.edu; UID: 467527</p>
+<p id="processbook">Process Book</p>
+<h2>Overview and Motivation</h2>
+<p>Because people are increasingly focusing on health and they are more willing to acquire information about health and medical science in recent years. Therefore, more and more technique and compute tools are used in the field of medical science. Moreover, we are really interested in advancing the technique in this field. To be specific, we are willing to do research about processing medical images and data, and using machine learning algorithms to predict future results to help patients to make optimal decisions.</p>
+
+<p>Motivated by our research interest, when we had a brainstorm and considered which project we would do, we decided to visualize data about health reports and medical data. We think our project would be really useful and helpful to people, because they can acquire information about health and medical data that they care about. Furthermore, these data were collected by the US government or some other authorities, so these data can be trusted by people. Therefore, when users interact with the visualization of these data, they can acquire really useful information. We think our visualization can help people make decisions to help them keep fit and healthy.<p/>
+
+<p>We would visualize data about all causes number and 10 leading causes of dearth in every state in US from year 1999 to year 2016.</p>
+
+<h2>Related Work</h2>
+<p>When I encounter my dataset, I found the data is related with the states in US; therefore, inspired by the map in studio 8, we decided to present total death numbers (labeled as “All causes’ in our dataset) in every state in US. After analyzing our dataset deeper and considering how to present death numbers caused by other specific numbers in our data, we found that these data have multiple dimensions, including year, states, death numbers and specific causes name, so we considered to use parallel coordinate to present these data. The idea to use parallel coordinate is inspired by the assignment 1, but the difference is that I used processing software to draw the parallel coordinate graphs, and I used D3 to draw parallel coordinate graph in our final project. Because our dataset contains the year numbers, so we are inspired by assignment 2, we decided to draw a timeline, and we also inspired by the studio 6, we may draw a select box instead of the timeline, so users can select a specific year number.</p>
+
+<h2>Question</h2>
+<p>We want to use our visualization method answer these questions: what are the total death numbers caused by disease in every state in US; is there any difference among total death numbers in different states in US; is there any difference among the numbers of 10 specific leading death reasons in different states in US;  is there any difference among death numbers in different years; what is the main cause of people’s death in every states in US.</p>
+
+<h2>Data</h2>
+<p>We choose the data from www.data.gov. This dataset presents the death numbers and age-adjusted death rates for the 10 leading causes of death and all causes in every state in the United States from 1999 to 2016 (link:https://catalog.data.gov/dataset/age-adjusted-death-rates-for-the-top-10-leading-causes-of-death-united-states-2013).</p>
+
+<p>Data are based on information from all resident death certificates filed in the 50 states and the District of Columbia using demographic and medical characteristics.</p>
+
+<h2>Exploratory Data Analysis</h2>
+<p>In general, before visualizing data from a dataset, we have to preprocess this dataset. To be specific, we have to select data that we consider as the useful information and discard data that we would not visualize.</p>
+
+<p>As for the data that we would visualize in this project, since data is already well-structured, we do not expect substantial data cleanup.The only data processing we may need is to fill in missing data or data with wrong format and filter out some unnecessary data. In terms of the implementation, We will first choose a small amount (around 1000 rows) for testing, if it work well, we will then apply the whole dataset(more than 100,000 rows) to it.</p>
+
+<p>When we initially looked at our dataset, these data are related to the state in US, so we gain insight about the numbers about every state in US, so we decided to draw a US map to present every state’s numbers. Then we found the data is related to the year, so we decided to present our data based on different year numbers</p>
+
+<h2>Design Evolution</h2>
+<p>We divided our dataset into two parts; the first part is the data of total death numbers in every state in US from year 1999 to year 2016(Total death number was labeled as “All causes” in our dataset); the second part is the data of death numbers caused by 10 specific leading causes in every state in US from year 1999 to year 2016. Then we visualize these two parts separately.</p>
+
+<p>First, when we tried to find a method or visualization to present the total death numbers in every state in US from year 1999 to year 2016(labeled as “All causes” in our dataset), we considered to draw a map at the beginning, but we considered to label numbers of states’ death in the map, but it was not aesthetic if we put text labels in the map; therefore, we decided to use different colors to classify the differences among these numbers. The advantage of using color is that it can make our visualization more eye-catching.</p>
+
+<p>Then I draw two bar charts. The first one is the chart that shows the total death number in every state in US from 1999 to 2016(Total death number was labeled as “All causes”in our dataset); therefore, users can explore the exact number of total death numbers in all states in US, and extract features about the difference among total death numbers in these states. The other bar chart is a little smaller than the first chart. This chart shows the total death number in US from 1999 to 2016, not the numbers in every state. Our dataset contains the data about the total death number in the whole country from 1999 to 2016, so we design this bar chart to show these data.</p>
+
+<p>Second, when we tried to visualize data about number of the death caused by 10 specific reasons in every state in US from year 1999 to year 2016. At first, we considered to draw a bar chart for every reasons, but if we chose this visualization method, we have to draw 10 graphs for 10 specific reasons, so it was not an ideal visualization.</p>
+
+<p>Then we considered to draw choropleth bar chart to present all 10 reasons at the same time, but we cannot present 10 leading causes at the same time, and we have to create two select boxes, one for year and one for 10 leading causes. We tried to convey information in one graph as much as possible, so this method is not an ideal visualization design, either.</p>
+
+<p>After that, we considered to drew the scatterplot graph, but if we chose this visualization method, although I could use the select box to select a specific year and draw circles for every state, I have to use 10 leading causes name as the x axis; because every leading causes name is related to state names, so circles represented for the same state would be drew 10 times in the same graphs. This visualization method would confuse users and readers.</p>
+
+<p>Finally, we decided to draw a parallel coordinate graphs to present all 10 learning causes of death.</p>
+
+<p>We also design a pie chart to present the data about the number of the death caused by 10 specific reasons in US. The radiuses of the arcs vary from the death number caused by these specific reasons to the number; therefore, users can explore the information about the difference of the death numbers caused by these reasons in US.</p>
+
+<h2>Implements</h2>
+<p>We drew a slider, a map, a vertical bar chart, a horizontal bar chart, a parallel coordinate and a pie chart in current state.</p>
+
+<p>First, in the top of our website, there is a slider; therefore, uses can select a year number in this slider through sliding these mouse,. Then the map, two car charts and the parallel coordinate would present the visualization of death numbers in the year that users selected in the slider.</p>
+
+<p>Secondly, we drew a US map, and the color of every state in this map vary from state to state. Through exploring the difference of color of states, users can acquire information about total death numbers in every state in US in the year selected in the select box. When users hover mouse in the state in our map, tooltip would be shown to users, and users can acquire information about state name and the number of “All causes” death from the tooltip.</p>
+
+<p>Thirdly, we design a horizontal bar chart. This chart shows the death numbers in every state in the year selected by the user in the slider. The bars in this chart are sorted by the death number, and the color vary from the number to the number.</p>
+
+<p>Fourthly, we design a vertical bar chart. This chart shows the total number of death number in the whole country, not a specific state. The bar which presented the year that selected in the slider has the color with 0.9 opacity, and other bars which present the years that are not selected have the color with 0.2 opacity.</p>
+
+<p>Fifthly, we drew a parallel coordinate graph to present 10 specific leading causes of deaths. Every axis in the parallel coordinate graph is created for one leading causes, every line is created for a state.</p>
+
+<p>Sixthly, we design a pie chart to present the death number caused by 10 specific reasons in US. The larger the death number is, the larger radius the arc which present this death reason has.</p>
+
+<h2>Evaluation</h2>
+<p>From the first part, the map, users can acquire information about the total death numbers in every state in US, so we can answer the question:what are the total death numbers caused by disease in every state in US, and the question: is there any difference among total death numbers in different states in US. From the horizontal bar chart, users can explore the information about the death numbers in every state in US. Users can also explore the information of the difference in these states, because we sort these bars based on the exact numbers in the specific years; therefore, this visualization can answer questions: what are the exact numbers of death numbers in states in US, and compare these numbers in this chart. We also design a horizontal bar chart, so users can explore information about the total death numbers in the whole country in the specific year, so this chart can answer the question: what are the total death numbers in the whole country from 1999 to 2016.</p>
+
+<p>From the second part, the parallel coordinate graph, we can acquire information about the 10 specific leading causes in every state in US, so we can answer the question: is there any difference among the numbers of 10 specific leading death reasons in different states in US, and the question: what is the main cause of people’s death in every states in US. In this part, we also design a pie chart, so this chart can answer the question: what are the death numbers caused by 10 specific reasons.</p>
+
+<p>When we use the slider to select different year number, we can acquire information about the death number in every state in US in different years, so we can answer the question: is there any difference among death numbers in different years</p>
+<h3>Original design in our project proposal</h3>
+<img src="images/1.jpeg" width="1000" height="800">
+<h3>Changed design in our milestone 2</h3>
+<img src="images/2.jpeg" width="1000" height="800">
+</body>
+</html>

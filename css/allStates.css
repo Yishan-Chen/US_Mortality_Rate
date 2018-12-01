@@ -1,0 +1,31 @@
+body {
+  background-color: black;
+}
+
+#canvas-svg {
+  float:left;
+  width: 55%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#barchart {
+  float:right;
+  width: 45%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.tick {
+  opacity: 1;
+  stroke: #FFFAFA;
+}
+
+.axis text{
+  font-size: 15;
+  opacity: 1;
+}
+
+.axis line {
+  stroke: #FFFAFA;
+}

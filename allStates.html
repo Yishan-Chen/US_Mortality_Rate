@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Visualization - US Leading Cause Of Deaths</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="css/banner.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="css/allStates.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="css/font-awesome.css" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Montserrat:300,500,600,700,800" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
+  <script src="https://unpkg.com/d3-simple-slider/build/d3-simple-slider.js"></script>
+  <script type="text/javascript" src="bower_components/d3.js"></script>
+  <script type="text/javascript" src="bower_components/d3.min.js"></script>
+  <script type="text/javascript" src="bower_components/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="bower_components/d3-tip.js"></script>
+  <script src="https://unpkg.com/d3-simple-slider/build/d3-simple-slider.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.1.0/topojson.min.js"></script>
+</head>
+
+<body>
+
+	<div id="home">
+		<div class="header-middle">
+			<div class="container">
+				<div class="logof-w3-agile">
+					<h1><a href="index.html">Visualization - US Leading Cause Of Deaths</a></h1>
+				</div>
+			</div>
+		</div>
+		<nav class="navbar navbar-inverse">
+      <div class="collapse navbar-collapse js-navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="index.html">Information</a></li>
+					<li><a href="country.html">Whole Country</a></li>
+					<li class="active"><a href="allStates.html">All States</a></li>
+					<li><a href="oneState.html">One State</a></li>
+					<li><a href="city.html">City</a></li>
+				</ul>
+			</div>
+		</nav>
+  </div>
+  <div class="col-sm">
+    <div id="slider"></div>
+  </div>
+
+  <div id="barchart" class = "view"></div>
+  <div id="canvas-svg" class = "view"></div>
+	<div id="bubble" class="view"></div>
+  <div id="tooltip-container" class = "view"></div>
+
+	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.js"></script>
+	<script src="js/SmoothScroll.min.js"></script>
+  <script type="application/javascript" src="js/bubble.js"></script>
+  <script type="application/javascript" src="js/graph.js"></script>
+  <script type="application/javascript" src="js/barchart.js"></script>
+
+</body>
+</html>
