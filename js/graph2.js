@@ -60,15 +60,10 @@ function updateGraph(year){
     d3.csv("data/NCHS_-_Leading_Causes_of_Death__United_States.csv",function(data){
       state_color_map = {}
       state_value_map = {}
-      var filter_data = data.filter(data => data.Year === year && data.State !== "United States");
+      var filter_data = data.filter(data => data.Year === year && data.State !== "United States" && data.CauseName == "All causes");
       filter_data.forEach(function(d) {
-        if (d.State in state_value_map){
-          state_value_map[d.State] += +d["Deaths"];
-        }
-        else {
-          state_value_map[d.State] = 0;
-        }
-      })
+          state_value_map[d.State] = +d["Deaths"];
+      });
       var data_entries = d3.entries(state_value_map);
       var range = ["#ffd8d8","#910000"];
       var domain = d3.extent(data_entries, function(d){
