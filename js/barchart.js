@@ -1,8 +1,8 @@
-function barChart(year){
+function barChart(year, flag, stateName){
   var margin = {top: 20, right: 20, bottom: 20, left: 120};
 
   var width = 800 - margin.left - margin.right,
-      height = 900 - margin.top - margin.bottom;
+      height = 1100 - margin.top - margin.bottom;
 
   var barchartsvg = d3.select("#barchart").append("svg")
   .attr("id", "barChart")
@@ -23,9 +23,16 @@ function barChart(year){
       });
     }
 
+    if(flag){
+      var maxValue = parseFloat(document.getElementById("inputBoxMax").value);
+      var minValue = parseFloat(document.getElementById("inputBoxMin").value);
+      var data = data.filter(data => data.Deaths > minValue && data.Deaths < maxValue);
+    }
+    var selectedState = document.getElementById("inputBoxState").value;
+
     data.sort(function(a, b) { return b.Deaths - a.Deaths; });
-    var bar_height = 15;
-    var gap = 2;
+    var bar_height = 18;
+    var gap = 3;
     var states = [];
 
     maxDeath = d3.max(data, d => d.Deaths)
@@ -67,12 +74,22 @@ function barChart(year){
     .data(data)
     .enter()
     .append("rect")
+    .transition()
+    .duration(1000)
     .attr("x", 0)
     .attr("y", function(d){ return y(d.State) + gap; })
     .attr("name", function(d, i){ return d.State; })
     .attr("width", function(d, i){ return x(d.Deaths); })
     .attr("height", bar_height)
-    .attr("fill", function(d){ return colorScale(d.Deaths); })
+    .attr("fill", function(d){
+      if(d.State === selectedState) {
+        return "#FFFAFA";
+      } else if (d.State === stateName) {
+        return "#FFFAFA";
+      } else {
+        return colorScale(d.Deaths);
+      }
+    });
 /*
     var text_deaths = barchartsvg.selectAll("text.score")
     .data(data)

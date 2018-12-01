@@ -1,4 +1,3 @@
-
 var margin = {top: 50, right: 0, bottom: 50, left: 0};
 
 var width = 1100 - margin.left - margin.right,
@@ -16,40 +15,37 @@ var path = d3.geoPath().projection(projection);
 
 $(function(){
 var data = d3.range(0, 18).map(function (d) { return new Date(1998 + d, 18, 3); });
-var yearNumber
+var yearNumber = "1999"
 
 var slider = d3.sliderHorizontal()
+.min(d3.min(data))
+.max(d3.max(data))
+.step(1000 * 60 * 60 * 24 * 365)
+.width(1500)
+.tickFormat(d3.timeFormat('%Y'))
+.tickValues(data)
+.on('onchange', val => {
+  resetGraph();
+  backGraph();
+  d3.selectAll("#barChart").remove();
+  yearNumber = String(d3.timeFormat('%Y')(val));
+  updateGraph(yearNumber)
+  barChart(yearNumber, filterFlag);
+});
 
-  .min(d3.min(data))
-  .max(d3.max(data))
-  .step(1000 * 60 * 60 * 24 * 365)
-  .width(1500)
-  .tickFormat(d3.timeFormat('%Y'))
-  .tickValues(data)
-  .on('onchange', val => {
-    d3.selectAll("#barChart").remove();
-    d3.selectAll("#total").remove();
-    d3.selectAll("#bubbleC").remove();
-    yearNumber = String(d3.timeFormat('%Y')(val));
-    updateGraph(yearNumber)
-    bubbleChart(yearNumber)
-    barChart(yearNumber)
-  });
-
+var filterFlag = false;
 var group = d3.select("div#slider").append("svg")
-  .attr("width", 1600)
-  .attr("height", 100)
-  .append("g")
-  .attr("transform", "translate(30,30)");
+.attr("width", 1600)
+.attr("height", 100)
+.append("g")
+.attr("transform", "translate(30,30)");
 
 group.call(slider);
 
-updateGraph("1999");
-bubbleChart("1999");
-barChart("1999");
+updateGraph("1999", filterFlag);
+barChart("1999", filterFlag);
 
-function updateGraph(year){
-
+function updateGraph(year, flag){
   d3.tsv("https://s3-us-west-2.amazonaws.com/vida-public/geo/us-state-names.tsv", function(error, names) {
     name_id_map = {};
     id_name_map = {};
@@ -57,7 +53,6 @@ function updateGraph(year){
       name_id_map[names[i].name] = names[i].id;
       id_name_map[names[i].id] = names[i].name;
     }
-
     d3.csv("data/NCHS_-_Leading_Causes_of_Death__United_States.csv",function(data){
       state_color_map = {}
       state_value_map = {}
@@ -65,6 +60,7 @@ function updateGraph(year){
       filter_data.forEach(function(d) {
           state_value_map[d.State] = +d["Deaths"];
       });
+      var selectedState = document.getElementById("inputBoxState").value;
       var data_entries = d3.entries(state_value_map);
       var range = ["#ffd8d8","#910000"];
       var domain = d3.extent(data_entries, function(d){
@@ -72,33 +68,41 @@ function updateGraph(year){
       });
       colorScale = d3.scaleLinear().domain(domain).range(range);
 
+      if(flag) {
+        var maxValue = parseFloat(document.getElementById("inputBoxMax").value);
+        var minValue = parseFloat(document.getElementById("inputBoxMin").value);
+        var selected_data = filter_data.filter(data => data.Deaths > minValue && data.Deaths < maxValue);
+      }
+
       data_entries.forEach(function(d) {
         state_color_map[d.key] = colorScale(d.value);
       });
       d3.json("https://s3-us-west-2.amazonaws.com/vida-public/geo/us.json", function(error, us) {
         graphSvg.append("g")
-            .attr("class", "states-choropleth")
-          .selectAll("path")
-            .data(topojson.feature(us, us.objects.states).features)
-          .enter().append("path")
-            .attr("transform", "scale(" + SCALE + ")")
-            .style("fill", function(d) {
-                var stateName = id_name_map[d.id];
-                var color = state_color_map[stateName];
-                if (color){
-                  return color;
-                } else {
-                  return "";
-                }
-            })
-            .attr("d", path)
-            .on("click", function(d){
-              var stateName = id_name_map[d.id];
-              updateChart(year, stateName);
-            })
-            .on("mousemove", function(d) {
-                var html = "";
-
+        .attr("class", "states-choropleth")
+        .selectAll("path")
+        .data(topojson.feature(us, us.objects.states).features)
+        .enter()
+        .append("path")
+        .attr("transform", "scale(" + SCALE + ")")
+        .style("fill", function(d) {
+            var stateName = id_name_map[d.id];
+            if(stateName === selectedState){
+              return "#FFFAFA";
+            } else {
+              var color = state_color_map[stateName];
+              if (color){return color;} else {return "";}
+            }
+          })
+        .attr("d", path)
+        .on("click", function(d){
+          d3.selectAll("#barChart").remove();
+           var stateName = id_name_map[d.id];
+           console.log(stateName)
+           barChart(year, false, stateName);
+          })
+        .on("mousemove", function(d) {
+            var html = "";
                 html += "<div class=\"tooltip_kv\">";
                 html += "<span class=\"tooltip_key\">";
                 html += id_name_map[d.id] + ":";
@@ -114,7 +118,6 @@ function updateGraph(year){
                 $("#tooltip-container").show();
 
                 var coordinates = d3.mouse(this);
-
                 var map_width = $('.states-choropleth')[0].getBoundingClientRect().width;
 
                 if (d3.event.layerX < map_width / 2) {
@@ -129,18 +132,62 @@ function updateGraph(year){
                 }
             })
             .on("mouseout", function() {
-                    $(this).attr("fill-opacity", "1.0");
-                    $("#tooltip-container").hide();
-                });
+                $(this).attr("fill-opacity", "1.0");
+                $("#tooltip-container").hide();
+              });
 
         graphSvg.append("path")
-            .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
-            .attr("class", "states")
-            .attr("transform", "scale(" + SCALE + ")")
-            .attr("d", path);
-          });
-        });
-
+        .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
+        .attr("class", "states")
+        .attr("transform", "scale(" + SCALE + ")")
+        .attr("d", path);
       });
-    }
+    });
+  });
+ }
+ document.getElementById("filter").addEventListener("click", filterGraph);
+ document.getElementById("reset").addEventListener("click", resetGraph);
+
+ function filterGraph(){
+   filterFlag = true;
+   d3.selectAll("#barChart").remove();
+   barChart(yearNumber, filterFlag);
+   updateGraph(yearNumber, filterFlag);
+ }
+
+ function resetGraph(){
+   filterFlag = false;
+   document.getElementById("inputBoxMax").value = null;
+   document.getElementById('inputBoxMin').value = null;
+   barChart(yearNumber, filterFlag);
+   updateGraph(yearNumber, filterFlag);
+ }
+
+ document.getElementById("search").addEventListener("click", searchGraph);
+ document.getElementById("back").addEventListener("click", backGraph);
+
+ function searchGraph(){
+   stateFlag = true;
+   d3.selectAll("#barChart").remove();
+   barChart(yearNumber);
+   updateGraph(yearNumber, filterFlag);
+ }
+
+ function backGraph(){
+   document.getElementById("inputBoxState").value = null;
+   d3.selectAll("#barChart").remove();
+   barChart(yearNumber);
+   updateGraph(yearNumber, filterFlag);
+ }
+/*
+ function handleClick(d, i){
+   if(d3.select(this)){
+     selected = this.id;
+     var thisState = id_name_map[selected];
+     console.log(thisState)
+     //d3.selectAll("#total").remove();
+     //total(selected);
+   }
+ }
+*/
 });

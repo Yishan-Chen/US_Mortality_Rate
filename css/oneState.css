@@ -1,0 +1,28 @@
+body {
+  background-color: black;
+}
+
+#canvas-svg {
+  float:right;
+  width: 55%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#search {
+  width: 45%;
+}
+
+.tick {
+  opacity: 1;
+  stroke: #FFFAFA;
+}
+
+.axis text{
+  font-size: 15;
+  opacity: 1;
+}
+
+.axis line {
+  stroke: #FFFAFA;
+}

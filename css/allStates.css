@@ -16,6 +16,13 @@ body {
   flex-wrap: wrap;
 }
 
+#wordcloud {
+  float:left;
+  width: 55%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 .tick {
   opacity: 1;
   stroke: #FFFAFA;
@@ -28,4 +35,20 @@ body {
 
 .axis line {
   stroke: #FFFAFA;
+}
+
+#show form {
+  margin: 0 auto;
+  max-width: 320px;
+}
+
+#show-details input {
+  width: 100%;
+  padding: 5px 10px;
+  margin-bottom: 10px;
+  font-size: inherit;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: 0;
 }

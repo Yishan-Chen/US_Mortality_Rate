@@ -1,7 +1,7 @@
 
 var margin = {top: 50, right: 0, bottom: 50, left: 0};
 
-var width = 1100 - margin.left - margin.right,
+var width = 900 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
 
 var graphSvg = d3.select("#canvas-svg").append("svg")
@@ -45,7 +45,6 @@ group.call(slider);
 updateGraph("1999");
 
 function updateGraph(year){
-
   d3.tsv("https://s3-us-west-2.amazonaws.com/vida-public/geo/us-state-names.tsv", function(error, names) {
     name_id_map = {};
     id_name_map = {};
@@ -73,19 +72,15 @@ function updateGraph(year){
       });
       d3.json("https://s3-us-west-2.amazonaws.com/vida-public/geo/us.json", function(error, us) {
         graphSvg.append("g")
-            .attr("class", "states-choropleth")
+          .attr("class", "states-choropleth")
           .selectAll("path")
-            .data(topojson.feature(us, us.objects.states).features)
+          .data(topojson.feature(us, us.objects.states).features)
           .enter().append("path")
-            .attr("transform", "scale(" + SCALE + ")")
-            .style("fill", function(d) {
-                var stateName = id_name_map[d.id];
-                var color = state_color_map[stateName];
-                if (color){
-                  return color;
-                } else {
-                  return "";
-                }
+          .attr("transform", "scale(" + SCALE + ")")
+          .style("fill", function(d) {
+              var stateName = id_name_map[d.id];
+              var color = state_color_map[stateName];
+              if (color){ return color;} else { return "";}
             })
             .attr("d", path)
             .on("click", function(d){
@@ -93,40 +88,10 @@ function updateGraph(year){
               updateChart(year, stateName);
             })
             .on("mousemove", function(d) {
-                var html = "";
-
-                html += "<div class=\"tooltip_kv\">";
-                html += "<span class=\"tooltip_key\">";
-                html += id_name_map[d.id] + ":";
-                html += "</span>";
-                html += "<span class=\"tooltip_value\">";
-                html += (state_value_map[id_name_map[d.id]] ? state_value_map[id_name_map[d.id]] : "");
-                html += "";
-                html += "</span>";
-                html += "</div>";
-
-                $("#tooltip-container").html(html);
                 $(this).attr("fill-opacity", "0.8");
-                $("#tooltip-container").show();
-
-                var coordinates = d3.mouse(this);
-
-                var map_width = $('.states-choropleth')[0].getBoundingClientRect().width;
-
-                if (d3.event.layerX < map_width / 2) {
-                  d3.select("#tooltip-container")
-                    .style("top", (d3.event.layerY + 15) + "px")
-                    .style("left", (d3.event.layerX + 15) + "px");
-                } else {
-                  var tooltip_width = $("#tooltip-container").width();
-                  d3.select("#tooltip-container")
-                    .style("top", (d3.event.layerY + 15) + "px")
-                    .style("left", (d3.event.layerX - tooltip_width - 30) + "px");
-                }
             })
             .on("mouseout", function() {
                     $(this).attr("fill-opacity", "1.0");
-                    $("#tooltip-container").hide();
                 });
 
         graphSvg.append("path")

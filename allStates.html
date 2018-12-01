@@ -18,6 +18,7 @@
   <script type="text/javascript" src="bower_component/d3-tip.js"></script>
   <script src="https://unpkg.com/d3-simple-slider/build/d3-simple-slider.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.1.0/topojson.min.js"></script>
+	<script src="//cdn.rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script>
 </head>
 
 <body>
@@ -45,18 +46,30 @@
   <div class="col-sm">
     <div id="slider"></div>
   </div>
-
+	<div align="center">
+		<p>Min<input id="inputBoxMin" type="text" size=40 placeholder="Min Deaths"/>
+		Max<input id="inputBoxMax" type="text" size=40 placeholder="Max Deaths"/></p>
+		<button id="filter" type="button">Filter</button>
+		<button id="reset" type="button">Reset</button>
+	</div>
   <div id="barchart" class = "view"></div>
   <div id="canvas-svg" class = "view"></div>
-	<div id="bubble" class="view"></div>
+	<hr/ >
+	<br />
+	<div align="center">
+		<input id="inputBoxState" type="text" size=40 placeholder="Search State"/>
+		<button id="search" type="button">Search</button>
+		<button id="back" type="button">Reset</button>
+	</div>
+	<div id='wordcloud'></div>
   <div id="tooltip-container" class = "view"></div>
 
 	<script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.js"></script>
 	<script src="js/SmoothScroll.min.js"></script>
-  <script type="application/javascript" src="js/bubble.js"></script>
   <script type="application/javascript" src="js/graph.js"></script>
   <script type="application/javascript" src="js/barchart.js"></script>
+	<script type="application/javascript" src="js/wordcloud.js"></script>
 
 </body>
 </html>

@@ -109,7 +109,7 @@ dataset2000 = {
 };
 
 function bubbleChart(year){
-  var width = 500,
+  var width = 1000,
       height = 500;
 
   var bubblesvg = d3.select("#bubble").append("svg")
