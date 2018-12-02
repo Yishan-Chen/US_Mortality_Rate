@@ -3,15 +3,21 @@ body {
 }
 
 #canvas-svg {
-  float:left;
-  width: 55%;
+  float:center;
   display: flex;
   flex-wrap: wrap;
 }
 
 #donutchart {
+  float:left;
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#radarchart {
   float:right;
-  width: 45%;
+  width: 50%;
   display: flex;
   flex-wrap: wrap;
 }

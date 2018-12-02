@@ -135,10 +135,19 @@ function bubbleChart(){
       });
     }
 
+    var range = ["#ffd8d8", "#910000"];
+    var domain = d3.extent(data, function(d){
+      return d.Deaths;
+    });
+    var colorScale = d3.scaleLinear()
+    .domain(domain)
+    .range(range);
+
+/*
     var color = d3.scaleOrdinal()
     .domain("1999","2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016")
     .range(['#00d5e9', '#ff5872', '#FFFAFA' , '#8A2BE2', '#FFC700', '#7feb00', '#ff00ff', '#8c510a','#FFA500']);
-
+*/
     var bubble = d3.pack(dataset)
     .size([diameter, diameter])
     .padding(1.5);
@@ -161,7 +170,8 @@ function bubbleChart(){
     .attr("id", function(d){return d.data.Year;})
     .attr("r", function(d){ return d.r; })
     .style("opacity", 0.8)
-    .style("fill", function(d) {return color(d.data.Year);})
+    //.style("fill", function(d) {return color(d.data.Year);})
+    .style("fill", function(d){ return colorScale(d.data.Deaths); })
     .on("click", handleMouse);
 
     node.append("text")

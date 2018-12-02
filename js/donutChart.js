@@ -1,15 +1,18 @@
 function donutChart(year, state){
-  var width = 500,
-      height = 500,
+  margin = {top: 100, right: 100, bottom: 100, left: 100};
+
+  var width = 400,
+      height = 400,
       outerRadius = Math.min(width, height) / 2,
       innerRadius = 0.51 * outerRadius;
 
   var drawSvg = d3.select("#donutchart").append("svg")
   .attr("id", "donut")
-  .attr("width", width)
-  .attr("height", height)
+  .attr("width", width + margin.right + margin.left)
+  .attr("height", height + margin.top + margin.bottom)
   .append("g")
-  .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+  //.attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+  .attr("transform", "translate(" + (width/2 + margin.left) + "," + (height/2 + margin.top) + ")");
 
   d3.csv('data/NCHS_-_Leading_Causes_of_Death__United_States.csv', function(error, data) {
     var data = data.filter(data => data.Year === year && data.State === state && data.CauseName !== "All causes");
@@ -29,7 +32,7 @@ function donutChart(year, state){
       .attr('class', 'd3-tip')
       .offset([0, 0])
       .html(function(d) {
-        return d.data.CauseName + ": <span style='color:orangered'>" + d.data.Deaths + "</span>";
+        return d.data.CauseName + ": <span style='color:#6CC4A4'>" + d.data.Deaths + "</span>";
       });
 
     var arc = d3.arc()
@@ -41,12 +44,22 @@ function donutChart(year, state){
 
     //var state = "Alabama";
     //var year = "2016";
+    /*
     var color = ['#9E0041','#E1514B','#F47245','#FB9F59','#FAE38C','#EAF195','#6CC4A4','#4D9DB4','#4776B4','#5E4EA1'];
     var causes = ['Cancer', "Alzheimer's disease","Unintentional injuries", "CLRD", "Diabetes", "Heart disease", "Influenza and pneumonia", "Kidney disease", "Stroke", "Suicide",];
     var cause_color_map = {}
     for(var i =0; i < 10; i++){
       cause_color_map[causes[i]] = color[i];
     };
+    */
+
+    var range = ["#ffd8d8", "#910000"];
+    var domain = d3.extent(data, function(d){
+      return d.Deaths;
+    });
+    var colorScale = d3.scaleLinear()
+    .domain(domain)
+    .range(range);
 
     drawSvg.call(tip);
 
@@ -62,10 +75,12 @@ function donutChart(year, state){
     var path = drawSvg.selectAll(".solidArc")
         .data(pie(data))
         .enter().append("path")
-        .attr("fill", function(d) {return cause_color_map[d.data.CauseName]; })
+        //.attr("fill", function(d) {return cause_color_map[d.data.CauseName]; })
+        .attr("fill", function(d){ return colorScale(d.data.Deaths); })
         .attr("class", "solidArc")
-        .attr("stroke", "gray")
+        .attr("stroke", "#FFFAFA")
         .attr("d", arc)
+        .attr("opacity", 0.9)
         .on('mouseover', tip.show)
         .on('mouseout', tip.hide);
 
@@ -73,7 +88,7 @@ function donutChart(year, state){
         .data(pie(data))
       .enter().append("path")
         .attr("fill", "none")
-        .attr("stroke", "gray")
+        .attr("stroke", "#FFFAFA")
         .attr("class", "outlineArc")
         .attr("d", outlineArc);
 

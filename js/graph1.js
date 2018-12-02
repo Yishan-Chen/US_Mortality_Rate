@@ -1,7 +1,7 @@
 
-var margin = {top: 50, right: 0, bottom: 50, left: 0};
+var margin = {top: 50, right: 300, bottom: 50, left: 300};
 
-var width = 900 - margin.left - margin.right,
+var width = 1600 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
 
 var graphSvg = d3.select("#canvas-svg").append("svg")
@@ -86,9 +86,11 @@ function updateGraph(year){
             .attr("d", path)
             .on("click", function(d){
               d3.selectAll("#donut").remove();
+              d3.select("#radarC").remove();
                var stateName = id_name_map[d.id];
                console.log(stateName)
                donutChart(year, stateName);
+               RadarChart(year, stateName);
               })
             .on("mousemove", function(d) {
                 $(this).attr("fill-opacity", "0.8");
