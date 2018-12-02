@@ -31,6 +31,7 @@ var slider = d3.sliderHorizontal()
     d3.selectAll("#total").remove();
     d3.selectAll("#bubbleC").remove();
     yearNumber = String(d3.timeFormat('%Y')(val));
+    d3.select("#donut").remove();
     updateGraph(yearNumber)
   });
 
@@ -84,9 +85,11 @@ function updateGraph(year){
             })
             .attr("d", path)
             .on("click", function(d){
-              var stateName = id_name_map[d.id];
-              updateChart(year, stateName);
-            })
+              d3.selectAll("#donut").remove();
+               var stateName = id_name_map[d.id];
+               console.log(stateName)
+               donutChart(year, stateName);
+              })
             .on("mousemove", function(d) {
                 $(this).attr("fill-opacity", "0.8");
             })

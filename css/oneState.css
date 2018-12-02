@@ -3,8 +3,15 @@ body {
 }
 
 #canvas-svg {
-  float:right;
+  float:left;
   width: 55%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#donutchart {
+  float:right;
+  width: 45%;
   display: flex;
   flex-wrap: wrap;
 }
