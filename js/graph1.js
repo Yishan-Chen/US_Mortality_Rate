@@ -32,6 +32,7 @@ var slider = d3.sliderHorizontal()
     d3.selectAll("#bubbleC").remove();
     yearNumber = String(d3.timeFormat('%Y')(val));
     d3.select("#donut").remove();
+    d3.select("#radarC").remove();
     updateGraph(yearNumber)
   });
 

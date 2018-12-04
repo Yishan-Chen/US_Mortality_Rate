@@ -20,11 +20,13 @@ dataset = {
     ]
 };
 
+var diameter = 500;
+
 var selected = "all";
 var sortFlag = false;
 total(selected);
 bubbleChart();
-sortRect(sortFlag);
+//sortRect(sortFlag);
 
 function total(select){
   var margin = {top: 100, right: 50, bottom: 50, left: 100};
@@ -121,8 +123,6 @@ function bubbleChart(){
   .attr("height", height)
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  var diameter = 500;
-
   var csvFile = "data/NCHS_-_Leading_Causes_of_Death__United_States.csv";
   d3.csv(csvFile, function (error, csv) {
     if(error){
@@ -167,6 +167,7 @@ function bubbleChart(){
     .text(function(d) {return d.data.Year;});
 
     node.append("circle")
+    .attr("class", "topBubble")
     .attr("id", function(d){return d.data.Year;})
     .attr("r", function(d){ return d.r; })
     .style("opacity", 0.8)
@@ -175,6 +176,7 @@ function bubbleChart(){
     .on("click", handleMouse);
 
     node.append("text")
+    .attr("class", "topBubbleText")
     .attr("dy", ".2em")
     .style("text-anchor", "middle")
     .text(function(d) { return d.data.Deaths;})
@@ -195,7 +197,7 @@ function handleMouse(d, i){
     total(selected);
   }
 }
-
+/*
 function sortRect(flag){
   var margin = {top: 100, right: 100, bottom: 50, left: 150};
 
@@ -263,21 +265,21 @@ function sortRect(flag){
     }
   });
 }
-
+*/
 function resetChart(){
   selected = "all";
   sortFlag = false;
   d3.selectAll("#total").remove();
   total(selected);
-  d3.selectAll("#rectC").remove();
-  sortRect(sortFlag);
+  //d3.selectAll("#rectC").remove();
+  //sortRect(sortFlag);
 }
-
+/*
 function sortChart(data){
   var sortFlag = true;
   d3.selectAll("#rectC").remove();
   sortRect(sortFlag);
 }
-
+*/
 document.getElementById("reset").addEventListener("click", resetChart);
-document.getElementById("sort").addEventListener("click", sortChart);
+//document.getElementById("sort").addEventListener("click", sortChart);

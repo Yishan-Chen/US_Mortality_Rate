@@ -7,16 +7,12 @@
 	<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
 	<link href="css/banner.css" rel="stylesheet" type="text/css" media="all" />
 	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="css/oneState.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="css/reason.css" rel="stylesheet" type="text/css" media="all" />
 	<link href="css/font-awesome.css" rel="stylesheet">
 	<link href="//fonts.googleapis.com/css?family=Montserrat:300,500,600,700,800" rel="stylesheet">
 	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800" rel="stylesheet">
-  <script type="text/javascript" src="bower_component/d3.js"></script>
-  <script type="text/javascript" src="bower_component/d3.min.js"></script>
-  <script type="text/javascript" src="bower_component/jquery-3.3.1.min.js"></script>
-  <script type="text/javascript" src="bower_component/d3-tip.js"></script>
-  <script src="https://unpkg.com/d3-simple-slider/build/d3-simple-slider.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/topojson/1.1.0/topojson.min.js"></script>
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+	<script type="text/javascript" src="bower_component/jquery-3.3.1.min.js"></script>
 </head>
 
 <body>
@@ -33,30 +29,21 @@
         <ul class="nav navbar-nav">
           <li><a href="index.html">Information</a></li>
           <li><a href="country.html">Whole Country</a></li>
-					<li><a href="reason.html">Ten reasons</a></li>
+          <li class="active"><a href="reason.html">Ten reasons</a></li>
           <li><a href="allStates.html">All States</a></li>
-          <li class="active"><a href="oneState.html">One State</a></li>
+          <li><a href="oneState.html">One State</a></li>
           <li><a href="city.html">City</a></li>
         </ul>
       </div>
 		</nav>
 	</div>
 
-  <div class="col-sm">
-    <div id="slider"></div>
-  </div>
-  <div id="canvas-svg" class="view"></div>
-	<hr />
-	<div id="donutchart" class="view"></div>
-	<div id="radarchart" class="view"></div>
-	<div id="tooltip-steam" class = "view"></div>
+  <div id="steamgraph" class="view" width="1000px"></div>
 
   <script type="text/javascript" src="js/jquery-2.1.4.min.js"></script>
 	<script type="text/javascript" src="js/bootstrap.js"></script>
 	<script src="js/SmoothScroll.min.js"></script>
-  <script type="application/javascript" src="js/graph1.js"></script>
-	<script type="application/javascript" src="js/donutChart.js"></script>
-	<script type="application/javascript" src="js/radarChart.js"></script>
+	<script type="application/javascript" src="js/steamgraph.js"></script>
 
 </body>
 </html>

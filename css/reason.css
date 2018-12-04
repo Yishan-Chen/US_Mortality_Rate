@@ -1,0 +1,9 @@
+body {
+  background-color: black;
+}
+
+.axis path, .axis line, .axis text {
+  stroke: #FFFAFA;
+  stroke-width: 1px;
+  shape-rendering: crispEdges;
+}
