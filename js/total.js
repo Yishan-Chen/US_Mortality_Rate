@@ -24,14 +24,14 @@ var diameter = 500;
 
 var selected = "all";
 var sortFlag = false;
-total(selected);
+total(selected, sortFlag);
 bubbleChart();
-//sortRect(sortFlag);
+addText(selected);
 
-function total(select){
-  var margin = {top: 100, right: 50, bottom: 50, left: 100};
+function total(select, flag){
+  var margin = {top: 50, right: 50, bottom: 50, left: 100};
 
-  var width = 700 - margin.left - margin.right,
+  var width = 1300 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
 
   var totalsvg = d3.select("#totalbar").append("svg")
@@ -51,6 +51,10 @@ function total(select){
         d.Year = d.Year;
         d.Deaths = +d.Deaths;
       })
+
+      if(flag) {
+        filter_data.sort(function(a, b) { return b.Deaths - a.Deaths; });
+      }
 
       var x = d3.scaleBand()
       .domain(filter_data.map(function(d){ return d.Year; }))
@@ -78,9 +82,54 @@ function total(select){
 
       totalsvg.selectAll("text")
       .attr("dy", ".36em")
+      .attr("dx", "-2em")
       .attr("transform", "rotate(-45)")
       .style("text-anchor", "end")
 
+      totalsvg.selectAll("rect")
+      .data(filter_data)
+      .enter()
+      .append("circle")
+      //.transition()
+      //.duration(1000)
+      //.delay(function(d, i) { return i * 30; })
+      .attr("class", "circles")
+      .attr("r", function(d){
+        if(select === "all"){return 10} else {
+          if(select === d.Year){return 20;} else {return 10;}
+        }
+      })
+      .attr("cx", function(d){ return x(d.Year); })
+      .attr("cy", function(d){ return y(d.Deaths); })
+      .style("opacity", function(d){
+        if(select === "all"){return 0.7} else {
+          if(select === d.Year){return 1.0;} else {return 0.2;}
+        }
+      })
+      .attr("fill", "#FFFAFA");
+
+      totalsvg.append("text")
+      .attr("y", 0)
+      .attr("x",0 + margin.right)
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .style("font-size", 15)
+      .text("Total Deaths")
+      .style("stroke", "#FFFAFA");
+
+      totalsvg.selectAll("#lines")
+      .data(data)
+      .enter()
+      .append("line")
+      .style("id", "lines")
+      .style("stroke-dasharray", ("3, 3"))
+      .attr("x1", function(d){ return x(d.Year); })
+      .attr("x2", function(d){ return x(d.Year); })
+      .attr("y1", 100)
+      .attr("y2", function(d){ return y(d.Deaths);})
+      .style("stroke", "#A9A9A9");
+
+      /*
       totalsvg.selectAll(".bar")
       .data(filter_data)
       .enter()
@@ -108,6 +157,56 @@ function total(select){
       .style("font-size", 15)
       .text("Total Deaths")
       .style("stroke", "#FFFAFA");
+
+      */
+    }
+  });
+}
+
+function addText(select){
+  var margin = {top: 20, right: 50, bottom: 20, left: 50};
+  var width = 1400,
+      height = 70;
+
+  var textsvg = d3.select("#textDiv").append("svg")
+  .attr("id", "textT")
+  .attr("width", width)
+  .attr("height", height)
+  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  var targetYear;
+  var targetDeaths = 0;
+  var total = 0;
+  var csvFile = "data/NCHS_-_Leading_Causes_of_Death__United_States.csv";
+  d3.csv(csvFile, function (error, csv) {
+    if(error){
+      throw error;
+    } else {
+      var data = csv.filter(csv => csv.State === "United States" && csv.CauseName === "All causes");
+      data.forEach(function(d){
+        d.Year = d.Year;
+        d.Deaths = parseFloat(d.Deaths);
+        total = total + d.Deaths;
+        if(d.Year === select){
+          targetYear = select;
+          targetDeaths = d.Deaths;
+          console.log(targetDeaths)
+        }
+        if (select === "all") {
+          targetYear = "From 1999 to 2016";
+          targetDeaths = total;
+        }
+      });
+      textsvg.append("text")
+      .attr("y", 0)
+      .attr("x",800)
+      .attr("dy", "1em")
+      .style("text-anchor", "middle")
+      .style("font-size", 30)
+      .style("font-family", "Times New Roman")
+      .text(targetYear + ": " + targetDeaths)
+      .style("stroke", "#FFFAFA");
+
     }
   });
 }
@@ -143,11 +242,6 @@ function bubbleChart(){
     .domain(domain)
     .range(range);
 
-/*
-    var color = d3.scaleOrdinal()
-    .domain("1999","2000","2001","2002","2003","2004","2005","2006","2007","2008","2009","2010","2011","2012","2013","2014","2015","2016")
-    .range(['#00d5e9', '#ff5872', '#FFFAFA' , '#8A2BE2', '#FFC700', '#7feb00', '#ff00ff', '#8c510a','#FFA500']);
-*/
     var bubble = d3.pack(dataset)
     .size([diameter, diameter])
     .padding(1.5);
@@ -171,7 +265,6 @@ function bubbleChart(){
     .attr("id", function(d){return d.data.Year;})
     .attr("r", function(d){ return d.r; })
     .style("opacity", 0.8)
-    //.style("fill", function(d) {return color(d.data.Year);})
     .style("fill", function(d){ return colorScale(d.data.Deaths); })
     .on("click", handleMouse);
 
@@ -194,92 +287,27 @@ function handleMouse(d, i){
   if(d3.select(this)){
     selected = this.id;
     d3.selectAll("#total").remove();
+    d3.selectAll("#textT").remove();
     total(selected);
+    addText(selected);
   }
 }
-/*
-function sortRect(flag){
-  var margin = {top: 100, right: 100, bottom: 50, left: 150};
 
-  var width = 1400 - margin.left - margin.right,
-      height = 200 - margin.top - margin.bottom;
-
-  var sortsvg = d3.select("#rectChart").append("svg")
-  .attr("id", "rectC")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-  .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-  var csvFile = "data/NCHS_-_Leading_Causes_of_Death__United_States.csv";
-  d3.csv(csvFile, function (error, csv) {
-    if(error){
-      throw error;
-    } else {
-      var data = csv.filter(csv => csv.State === "United States" && csv.CauseName === "All causes");
-      data.forEach(function(d){
-        d.Year = d.Year;
-        d.Deaths = +d.Deaths;
-      });
-
-      if(flag){
-        data.sort(function(a,b){return d3.ascending(a.Deaths, b.Deaths);})
-      }
-
-      var x = d3.scaleBand()
-      .domain(data.map(function(d){ return d.Year; }))
-      .rangeRound([0, width], .1)
-      .padding(0.2);
-
-      let maxDeath = d3.max(data, d => d.Deaths);
-
-      var y = d3.scaleLinear()
-      .domain([0, maxDeath + 100000])
-      .range([height, 0]);
-
-      sortsvg.selectAll(".sort")
-      .data(data)
-      .enter()
-      .append("rect")
-      .transition()
-      .duration(1000)
-      .delay(function(d, i) { return i * 50; })
-      .attr("class", "sort")
-      .attr("x", function(d){ return x(d.Year); })
-      .attr("width", x.bandwidth())
-      .attr("y", 0)
-      .attr("height", height)
-      .attr("fill", "#FFFAFA");
-
-      sortsvg.selectAll("text")
-      .data(data)
-      .enter()
-      .append("text")
-      .transition()
-      .duration(1000)
-      .attr("x", function(d){ return x(d.Year) + 8; })
-      .attr("y", 30)
-      .attr("fill", "black")
-      .text(function(d){return d.Year;});
-
-    }
-  });
-}
-*/
 function resetChart(){
   selected = "all";
   sortFlag = false;
   d3.selectAll("#total").remove();
-  total(selected);
-  //d3.selectAll("#rectC").remove();
-  //sortRect(sortFlag);
+  d3.selectAll("#textT").remove();
+  total(selected, sortFlag);
+  addText(selected);
 }
-/*
-function sortChart(data){
+
+function sortChart(){
+  selected = "all";
   var sortFlag = true;
-  d3.selectAll("#rectC").remove();
-  sortRect(sortFlag);
+  d3.selectAll("#total").remove();
+  total(selected, sortFlag);
 }
-*/
-document.getElementById("reset").addEventListener("click", resetChart);
-//document.getElementById("sort").addEventListener("click", sortChart);
+
+document.getElementById("cancel").addEventListener("click", resetChart);
+document.getElementById("sort").addEventListener("click", sortChart);

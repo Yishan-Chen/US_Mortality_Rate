@@ -34,7 +34,6 @@ function steamGraph(csvpath, color) {
       .style("left", "55px")
       .style("background-color", "#FFFAFA");
 
-  //var x = d3.time.scale()
   var x = d3.scale.linear()
       .range([0, width]);
 
@@ -78,7 +77,7 @@ function steamGraph(csvpath, color) {
   var graph = d3.csv(csvpath, function(data) {
     data.forEach(function(d) {
       //d.date = format.parse(d.date);
-      d.date = +d.Year;
+      d.date = d.Year;
       d.value = +d.Deaths;
     });
 
