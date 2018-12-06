@@ -92,8 +92,8 @@ function updateGraph(year){
                 $(this).attr("fill-opacity", "0.8");
             })
             .on("mouseout", function() {
-                    $(this).attr("fill-opacity", "1.0");
-                });
+                $(this).attr("fill-opacity", "1.0");
+            });
 
         graphSvg.append("path")
             .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
@@ -106,14 +106,21 @@ function updateGraph(year){
       });
     }
     function compareChart(){
-      d3.select("#donutCompareC").remove();
-      d3.select("#radarCompareC").remove();
+      d3.select("#donutCompareC1").remove();
+      d3.select("#radarCompareC1").remove();
+      d3.select("#donutCompareC2").remove();
+      d3.select("#radarCompareC2").remove();
+      d3.select("#lineChart").remove();
       d3.select("#text2").remove();
-      var whichYear = d3.select("#year-select").property("value");
-      var whichState = d3.select("#state-select").property("value");
-      donutCompare(whichYear, whichState);
-      RadarCompare(whichYear, whichState);
-      addText(whichYear, whichState);
+      var whichYear1 = d3.select("#year-select-1").property("value");
+      var whichState1 = d3.select("#state-select-1").property("value");
+      var whichYear2 = d3.select("#year-select-2").property("value");
+      var whichState2 = d3.select("#state-select-2").property("value");
+      donutCompare1(whichYear1, whichState1);
+      RadarCompare1(whichYear1, whichState1);
+      donutCompare2(whichYear2, whichState2);
+      RadarCompare2(whichYear2, whichState2);
+      compareLineChart(whichYear1, whichYear2, whichState1, whichState2);
     }
 
     document.getElementById("comparebutton").addEventListener("click", compareChart);

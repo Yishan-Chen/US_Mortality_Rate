@@ -1,8 +1,6 @@
 //steamGraph("data/data.csv", "orange");
 steamGraph("data/NCHS_-_Leading_Causes_of_Death__United_States_time.csv", "orange");
 
-//steamGraph("data/data.csv", "orange");
-
 var datearray = [];
 var colorrange = [];
 
@@ -122,7 +120,6 @@ function steamGraph(csvpath, color) {
         mousex = d3.mouse(this);
         mousex = mousex[0];
         var invertedx = parseInt(x.invert(mousex));
-        console.log(invertedx)
         mousey = mousex[1];
 /*
         invertedx = invertedx.getMonth() + invertedx.getDate();
@@ -147,8 +144,9 @@ function steamGraph(csvpath, color) {
         .attr("stroke", strokecolor)
         .attr("stroke-width", "0.5px")
         .attr("stroke", "#FFFAFA")
-        tooltip.html( "<p>" + d.key + "<br>" + pro + "</p>" ).style("visibility", "visible");
-
+        tooltip.html( "<p>" + d.key + "<br>" + pro + "</p>" )
+        .style("left", mousex +"px")
+        .style("visibility", "visible");
       })
 
       .on("mouseout", function(d, i) {
@@ -160,7 +158,7 @@ function steamGraph(csvpath, color) {
         .classed("hover", false)
         .attr("stroke-width", "0px"), tooltip.html( "<p>" + d.key + "<br>" + pro + "</p>" ).style("visibility", "hidden");
     })
-/*
+
     var vertical = d3.select("#steamgraph")
           .append("div")
           .attr("class", "remove")
@@ -183,6 +181,6 @@ function steamGraph(csvpath, color) {
         mousex = d3.mouse(this);
         mousex = mousex[0] + 5;
         vertical.style("left", mousex + "px")});
-        */
+
   });
 }

@@ -22,14 +22,28 @@ body {
   flex-wrap: wrap;
 }
 
-#donutchartCompare {
+#donutchartCompare1 {
   float:left;
   width: 50%;
   display: flex;
   flex-wrap: wrap;
 }
 
-#radarchartCompare {
+#donutchartCompare2 {
+  float:left;
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#radarchartCompare1 {
+  float:left;
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#radarchartCompare2 {
   float:right;
   width: 50%;
   display: flex;
