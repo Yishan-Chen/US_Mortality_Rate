@@ -1,4 +1,4 @@
-function RadarChart(year, state) {
+function RadarCompare(year, state) {
 	var cfg = {
 	 w: 400,
 	 h: 400,
@@ -45,8 +45,8 @@ function RadarChart(year, state) {
         .range([0, radius])
         .domain([0, maxValue]);
 
-      var radarchartsvg = d3.select("#radarchart").append("svg")
-      .attr("id", "radarC")
+      var radarchartsvg = d3.select("#radarchartCompare").append("svg")
+      .attr("id", "radarCompareC")
       .attr("width",  cfg.w + cfg.margin.left + cfg.margin.right)
       .attr("height", cfg.h + cfg.margin.top + cfg.margin.bottom);
       var g = radarchartsvg.append("g")

@@ -1,5 +1,5 @@
 
-var margin = {top: 50, right: 300, bottom: 50, left: 300};
+var margin = {top: 50, right: 300, bottom: 20, left: 300};
 
 var width = 1600 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
@@ -15,11 +15,9 @@ var projection = d3.geoAlbersUsa();
 var path = d3.geoPath().projection(projection);
 
 $(function(){
-var data = d3.range(0, 18).map(function (d) { return new Date(1998 + d, 18, 3); });
-var yearNumber
-
-var slider = d3.sliderHorizontal()
-
+  var data = d3.range(0, 18).map(function (d) { return new Date(1998 + d, 18, 3); });
+  var yearNumber
+  var slider = d3.sliderHorizontal()
   .min(d3.min(data))
   .max(d3.max(data))
   .step(1000 * 60 * 60 * 24 * 365)
@@ -27,12 +25,10 @@ var slider = d3.sliderHorizontal()
   .tickFormat(d3.timeFormat('%Y'))
   .tickValues(data)
   .on('onchange', val => {
-    d3.selectAll("#barChart").remove();
-    d3.selectAll("#total").remove();
-    d3.selectAll("#bubbleC").remove();
     yearNumber = String(d3.timeFormat('%Y')(val));
     d3.select("#donut").remove();
     d3.select("#radarC").remove();
+    d3.select("#text1").remove();
     updateGraph(yearNumber)
   });
 
@@ -89,7 +85,6 @@ function updateGraph(year){
               d3.selectAll("#donut").remove();
               d3.select("#radarC").remove();
                var stateName = id_name_map[d.id];
-               console.log(stateName)
                donutChart(year, stateName);
                RadarChart(year, stateName);
               })
@@ -110,4 +105,17 @@ function updateGraph(year){
 
       });
     }
+    function compareChart(){
+      d3.select("#donutCompareC").remove();
+      d3.select("#radarCompareC").remove();
+      d3.select("#text2").remove();
+      var whichYear = d3.select("#year-select").property("value");
+      var whichState = d3.select("#state-select").property("value");
+      donutCompare(whichYear, whichState);
+      RadarCompare(whichYear, whichState);
+      addText(whichYear, whichState);
+    }
+
+    document.getElementById("comparebutton").addEventListener("click", compareChart);
+
 });

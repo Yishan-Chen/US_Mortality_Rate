@@ -1,5 +1,4 @@
-function donutChart(year, state){
-  d3.select("#text1").remove();
+function donutCompare(year, state){
   margin = {top: 80, right: 50, bottom: 100, left: 200};
 
   var width = 400,
@@ -7,8 +6,8 @@ function donutChart(year, state){
       outerRadius = Math.min(width, height) / 2,
       innerRadius = 0.51 * outerRadius;
 
-  var drawSvg = d3.select("#donutchart").append("svg")
-  .attr("id", "donut")
+  var drawSvg = d3.select("#donutchartCompare").append("svg")
+  .attr("id", "donutCompareC")
   .attr("width", width + margin.right + margin.left)
   .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -42,17 +41,6 @@ function donutChart(year, state){
     .innerRadius(innerRadius)
     .outerRadius(outerRadius);
 
-    //var state = "Alabama";
-    //var year = "2016";
-    /*
-    var color = ['#9E0041','#E1514B','#F47245','#FB9F59','#FAE38C','#EAF195','#6CC4A4','#4D9DB4','#4776B4','#5E4EA1'];
-    var causes = ['Cancer', "Alzheimer's disease","Unintentional injuries", "CLRD", "Diabetes", "Heart disease", "Influenza and pneumonia", "Kidney disease", "Stroke", "Suicide",];
-    var cause_color_map = {}
-    for(var i =0; i < 10; i++){
-      cause_color_map[causes[i]] = color[i];
-    };
-    */
-
     var range = ["#ffd8d8", "#910000"];
     var domain = d3.extent(data, function(d){
       return d.Deaths;
@@ -75,7 +63,6 @@ function donutChart(year, state){
     var path = drawSvg.selectAll(".solidArc")
         .data(pie(data))
         .enter().append("path")
-        //.attr("fill", function(d) {return cause_color_map[d.data.CauseName]; })
         .attr("fill", function(d){ return colorScale(d.data.Deaths); })
         .attr("class", "solidArc")
         .attr("stroke", "#FFFAFA")
@@ -100,21 +87,6 @@ function donutChart(year, state){
       .attr("text-anchor", "middle")
       .attr("stroke", "#FFFAFA")
       .text(Math.round(score));
-
-      var textWidth = 1000,
-          textHeight = 80;
-
-      var textSvg = d3.select("#textInfo").append("svg")
-      .attr("id", "text1")
-      .attr("width", textWidth)
-      .attr("height", textHeight)
-      .append("g")
-      .attr("transform", "translate(" + (textWidth/2) + "," + (textHeight/2) + ")");
-
-      textSvg.append("text")
-      .attr("stroke", "#FFFAFA")
-      .attr("font-size", 50)
-      .text(year+": "+state);
 
   });
 }

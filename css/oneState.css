@@ -22,6 +22,20 @@ body {
   flex-wrap: wrap;
 }
 
+#donutchartCompare {
+  float:left;
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#radarchartCompare {
+  float:right;
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
 #search {
   width: 45%;
 }
