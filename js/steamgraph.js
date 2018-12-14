@@ -28,7 +28,7 @@ function steamGraph(csvpath, color) {
       .style("position", "absolute")
       .style("z-index", "20")
       .style("visibility", "hidden")
-      .style("top", "30px")
+      .style("top", "200px")
       .style("left", "55px")
       .style("background-color", "#FFFAFA");
 

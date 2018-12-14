@@ -367,7 +367,6 @@ function RadarCompare2(year, state) {
         .enter().append("g")
         .attr("class", "radarWrapper");
 
-      //Append the backgrounds
       blobWrapper
         .append("path")
         .attr("class", "radarArea")
@@ -376,7 +375,8 @@ function RadarCompare2(year, state) {
         .style("fill-opacity", cfg.opacityArea)
         .on('mouseover', function (d,i){
           d3.selectAll(".radarArea")
-            .transition().duration(200)
+            .transition()
+						.duration(200)
             .style("fill-opacity", 0.1);
           d3.select(this)
             .transition().duration(200)
@@ -384,7 +384,8 @@ function RadarCompare2(year, state) {
         })
         .on('mouseout', function(){
           d3.selectAll(".radarArea")
-            .transition().duration(200)
+            .transition()
+						.duration(200)
             .style("fill-opacity", cfg.opacityArea);
         });
 
@@ -393,7 +394,6 @@ function RadarCompare2(year, state) {
         .attr("d", function(d,i) { return radarLine(d); })
         .style("stroke-width", cfg.strokeWidth + "px")
         .style("stroke", function(d,i) { return cfg.color(i); })
-				//.style("stroke", "steelblue")
         .style("fill", "none")
         .style("filter" , "url(#glow)");
 
@@ -431,7 +431,8 @@ function RadarCompare2(year, state) {
             .attr('y', newY)
             .attr("stroke", "#FFFAFA")
             .text(Format(d.percentage))
-            .transition().duration(200)
+            .transition()
+						.duration(200)
             .style('opacity', 1);
         })
         .on("mouseout", function(){

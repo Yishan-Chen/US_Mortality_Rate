@@ -159,6 +159,7 @@ function updateGraph(year, flag){
    filterFlag = false;
    document.getElementById("inputBoxMax").value = null;
    document.getElementById('inputBoxMin').value = null;
+   d3.selectAll("#barChart").remove();
    barChart(yearNumber, filterFlag);
    updateGraph(yearNumber, filterFlag);
  }
