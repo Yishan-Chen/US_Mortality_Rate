@@ -4,7 +4,7 @@ function compareChart(){
   d3.select("#donutCompareC2").remove();
   d3.select("#radarCompareC2").remove();
   d3.select("#barChartC").remove();
-  d3.select("#text2").remove();
+  d3.selectAll(".text").style("visibility","visible");
   var whichYear1 = d3.select("#year-select-1").property("value");
   var whichState1 = d3.select("#state-select-1").property("value");
   var whichYear2 = d3.select("#year-select-2").property("value");

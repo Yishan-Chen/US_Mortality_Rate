@@ -1,3 +1,12 @@
 body {
   background-color: black;
 }
+
+.axis{
+  font-size: 15;
+  opacity: 1;
+}
+
+.axis{
+  stroke: #FFFAFA;
+}

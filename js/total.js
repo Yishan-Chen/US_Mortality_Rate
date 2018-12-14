@@ -24,144 +24,143 @@ var diameter = 500;
 
 var selected = "all";
 var sortFlag = false;
-total(selected, sortFlag);
+stackBarChart(sortFlag);
 bubbleChart();
 addText(selected);
 
-function total(select, flag){
-  var margin = {top: 50, right: 50, bottom: 50, left: 100};
+function stackBarChart(flag) {
+  var margin = {top: 20, right: 20, bottom: 20, left: 120};
 
-  var width = 1300 - margin.left - margin.right,
-      height = 400 - margin.top - margin.bottom;
+  var width = 1400 - margin.left - margin.right,
+      height = 600 - margin.top - margin.bottom;
 
-  var totalsvg = d3.select("#totalbar").append("svg")
-  .attr("id", "total")
+  var stacksvg = d3.select("#stack").append("svg")
+  .attr("id", "stackBar")
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-  var csvFile = "data/NCHS_-_Leading_Causes_of_Death__United_States.csv";
-  d3.csv(csvFile, function (error, data) {
-    if(error){
-      throw error;
-    } else {
-      var filter_data = data.filter(data => data.CauseName === "All causes" && data.State === "United States")
-      filter_data.forEach(function(d){
-        d.Year = d.Year;
-        d.Deaths = +d.Deaths;
-      })
+  var x = d3.scaleBand()
+  .rangeRound([0, 1000])
+  .paddingInner(0.4)
+  .align(0.2);
 
-      if(flag) {
-        filter_data.sort(function(a, b) { return b.Deaths - a.Deaths; });
-      }
+  var y = d3.scaleLinear()
+  .rangeRound([height, 0]);
 
-      var x = d3.scaleBand()
-      .domain(filter_data.map(function(d){ return d.Year; }))
-      .rangeRound([0, width], .1)
-      .padding(0.5);
+  csvfile = "data/NCHS_-_Leading_Causes_of_Death__United_States_time.csv";
+  d3.csv(csvfile, function(d, i, columns) {
+    for (i = 1, t = 0; i < columns.length; ++i) t += d[columns[i]] = +d[columns[i]];
+    d.total = t;
+    return d;
+  }, function(error, data) {
+    if (error) throw error;
 
-      let maxDeath = d3.max(filter_data, d => d.Deaths);
+    var keys = data.columns.slice(1);
 
-      var y = d3.scaleLinear()
-      .domain([0, maxDeath + 100000])
-      .range([height, 0]);
+    //var z = d3.scaleSequential(d3.interpolateBlues)
+    //.domain([0, 100000]);
 
-      totalsvg.append("g")
-      .transition()
-      .duration(1000)
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x))
-      .style("stroke", "white");
-
-      totalsvg.append("g")
-      .transition()
-      .duration(1000)
-      .call(d3.axisLeft(y))
-      .style("stroke", "white");
-
-      totalsvg.selectAll("text")
-      .attr("dy", ".36em")
-      .attr("dx", "-2em")
-      .attr("transform", "rotate(-45)")
-      .style("text-anchor", "end")
-
-      totalsvg.selectAll("rect")
-      .data(filter_data)
-      .enter()
-      .append("circle")
-      //.transition()
-      //.duration(1000)
-      //.delay(function(d, i) { return i * 30; })
-      .attr("class", "circles")
-      .attr("r", function(d){
-        if(select === "all"){return 10} else {
-          if(select === d.Year){return 20;} else {return 10;}
-        }
-      })
-      .attr("cx", function(d){ return x(d.Year); })
-      .attr("cy", function(d){ return y(d.Deaths); })
-      .style("opacity", function(d){
-        if(select === "all"){return 0.7} else {
-          if(select === d.Year){return 1.0;} else {return 0.2;}
-        }
-      })
-      .attr("fill", "#FFFAFA");
-
-      totalsvg.append("text")
-      .attr("y", 0)
-      .attr("x",0 + margin.right)
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .style("font-size", 15)
-      .text("Total Deaths")
-      .style("stroke", "#FFFAFA");
-
-      totalsvg.selectAll("#lines")
-      .data(data)
-      .enter()
-      .append("line")
-      .style("id", "lines")
-      .style("stroke-dasharray", ("3, 3"))
-      .attr("x1", function(d){ return x(d.Year); })
-      .attr("x2", function(d){ return x(d.Year); })
-      .attr("y1", 100)
-      .attr("y2", function(d){ return y(d.Deaths);})
-      .style("stroke", "#A9A9A9");
-
-      /*
-      totalsvg.selectAll(".bar")
-      .data(filter_data)
-      .enter()
-      .append("rect")
-      .transition()
-      .duration(1000)
-      //.delay(function(d, i) { return i * 30; })
-      .attr("class", "bar")
-      .attr("x", function(d){ return x(d.Year); })
-      .attr("width", x.bandwidth())
-      .attr("y", function(d){ return y(d.Deaths); })
-      .attr("height", function(d){ return height - y(d.Deaths); })
-      .style("opacity", function(d){
-        if(select === "all"){return 0.7} else {
-          if(select === d.Year){return 1.0;} else {return 0.2;}
-        }
-      })
-      .attr("fill", "#FFFAFA");
-
-      totalsvg.append("text")
-      .attr("y", 0)
-      .attr("x",0 + margin.right*2)
-      .attr("dy", "1em")
-      .style("text-anchor", "middle")
-      .style("font-size", 15)
-      .text("Total Deaths")
-      .style("stroke", "#FFFAFA");
-
-      */
+    if(flag){
+      data.sort(function(a, b) { return b.total - a.total; });
     }
+
+    //data.sort(function(a, b) { return b.total - a.total; });
+    x.domain(data.map(function(d) { return d.Year; }));
+    y.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
+
+    var z = d3.scaleOrdinal(d3.schemeCategory20c)
+    .domain(["Alzheimer's disease","Cancer","CLRD","Diabetes","Heart disease","Influenza and pneumonia","Kidney disease","Stroke","Suicide","Unintentional injuries","other"]);
+
+    stacksvg.append("g")
+    .selectAll("g")
+    .data(d3.stack().keys(keys)(data))
+    .enter().append("g")
+    .attr("fill", function(d) { return z(d.key); })
+    .style("opacity", 0.8)
+    .selectAll("rect")
+    .data(function(d) { return d; })
+    .enter().append("rect")
+    .attr("x", function(d) { return x(d.data.Year); })
+    .attr("y", function(d) { return y(d[1]); })
+    .attr("height", function(d) { return y(d[0]) - y(d[1]); })
+    .attr("width", x.bandwidth())
+    .on("mouseover", function() { tooltip.style("display", null); })
+    .on("mouseout", function() { tooltip.style("display", "none"); })
+    .on("mousemove", function(d) {
+      var xPosition = d3.mouse(this)[0] - 30;
+        //var yPosition = d3.mouse(this)[1] + 20;
+      var yPosition = 20;
+      tooltip.attr("transform", "translate(" + xPosition + "," + yPosition + ")");
+      tooltip.select("text").text(d[1]-d[0]);
+    });
+/*
+    stacksvg.selectAll("rect")
+    .transition()
+    .delay(function (d) {return Math.random()*1000;})
+    .duration(1000)
+    .attr("y", function(d) { return y(d[1]); })
+    .attr("height", function(d) { return y(d[0]) - y(d[1]); });
+*/
+    stacksvg.append("g")
+    .attr("class", "axis")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
+
+    stacksvg.append("g")
+    .attr("class", "axis")
+    .call(d3.axisLeft(y).ticks(null, "s"))
+    .append("text")
+    .attr("x", 2)
+    .attr("y", y(y.ticks().pop()) + 0.5)
+    .attr("dy", "0.32em")
+    .attr("fill", "#000")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "start");
+
+    var legend = stacksvg.append("g")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", 10)
+    .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(keys.slice().reverse())
+    .enter().append("g")
+    .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+    legend.append("rect")
+        .attr("x", width - 19)
+        .attr("width", 19)
+        .attr("height", 19)
+        .attr("fill", z);
+
+    legend.append("text")
+        .attr("x", width - 24)
+        .attr("y", 9.5)
+        .attr("dy", "0.32em")
+        .attr("stroke", "#FFFAFA")
+        .text(function(d) { return d; });
   });
+
+    // Prep the tooltip bits, initial display is hidden
+    var tooltip = stacksvg.append("g")
+      .attr("class", "tooltip")
+      .style("display", "none");
+
+    tooltip.append("rect")
+      .attr("width", 60)
+      .attr("height", 20)
+      .attr("fill", "white")
+      .style("opacity",0.8);
+
+    tooltip.append("text")
+      .attr("x", 30)
+      .attr("dy", "1.2em")
+      .style("text-anchor", "middle")
+      .attr("font-size", "12px")
+      .attr("font-weight", "bold");
 }
+
 
 function addText(select){
   var margin = {top: 20, right: 50, bottom: 20, left: 50};
@@ -234,13 +233,7 @@ function bubbleChart(){
       });
     }
 
-    var range = ["#ffd8d8", "#910000"];
-    var domain = d3.extent(data, function(d){
-      return d.Deaths;
-    });
-    var colorScale = d3.scaleLinear()
-    .domain(domain)
-    .range(range);
+    var colorScale = d3.scaleOrdinal(d3.schemeCategory20c);
 
     var bubble = d3.pack(dataset)
     .size([diameter, diameter])
@@ -274,7 +267,7 @@ function bubbleChart(){
     .style("text-anchor", "middle")
     .text(function(d) { return d.data.Deaths;})
     .attr("font-family", "sans-serif")
-    .attr("font-size", function(d){return d.r/4;})
+    .attr("font-size", function(d){return d.r/4.5;})
     .attr("fill", "white");
 
     d3.select(self.frameElement)
@@ -286,9 +279,7 @@ function bubbleChart(){
 function handleMouse(d, i){
   if(d3.select(this)){
     selected = this.id;
-    d3.selectAll("#total").remove();
     d3.selectAll("#textT").remove();
-    total(selected);
     addText(selected);
   }
 }
@@ -296,17 +287,17 @@ function handleMouse(d, i){
 function resetChart(){
   selected = "all";
   sortFlag = false;
-  d3.selectAll("#total").remove();
+  d3.selectAll("#stackBar").remove();
   d3.selectAll("#textT").remove();
-  total(selected, sortFlag);
+  stackBarChart(sortFlag);
   addText(selected);
 }
 
 function sortChart(){
   selected = "all";
   var sortFlag = true;
-  d3.selectAll("#total").remove();
-  total(selected, sortFlag);
+  d3.selectAll("#stackBar").remove();
+  stackBarChart(sortFlag);
 }
 
 document.getElementById("cancel").addEventListener("click", resetChart);
