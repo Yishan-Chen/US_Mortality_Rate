@@ -10,7 +10,16 @@ body {
 .axis{
   stroke: #FFFAFA;
 }
-
+/*
+.labelName tspan {
+    font-style: normal;
+    font-weight: 500;
+}
+*/
+.labelName {
+    font-size: 1em;
+    font-style: italic;
+}
 
 path.slice{
 	stroke-width:2px;
@@ -25,14 +34,66 @@ polyline{
 
 #bubbleDiv {
   float:left;
-  width: 50%;
+  width: 40%;
   display: flex;
   flex-wrap: wrap;
 }
 
 #piechart {
   float:right;
-  width: 50%;
+  width: 60%;
   display: flex;
   flex-wrap: wrap;
+}
+
+#buttonArea {
+  float:left;
+  width: 10%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#stack {
+  float:right;
+  width: 90%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#cancel {
+  font-size: 30px;
+  background-color:#4CAF50;
+  border-radius: 8px;
+  border: 2px solid #4CAF50;
+  color: white;
+  width:250px;
+}
+
+#sort {
+  font-size: 30px;
+  background-color:#4CAF50;
+  border-radius: 8px;
+  border: 2px solid #4CAF50;
+  color: white;
+  width:250px;
+}
+
+#cancel {
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+#cancel:hover {
+  background-color:#FFFAFA; /* Green */
+  color: black;
+}
+
+#sort {
+  -webkit-transition-duration: 0.4s; /* Safari */
+  transition-duration: 0.4s;
+}
+
+#sort:hover {
+  background-color:#FFFAFA; /* Green */
+  color: black;
 }

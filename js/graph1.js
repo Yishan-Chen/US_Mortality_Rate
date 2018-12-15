@@ -11,7 +11,7 @@ var graphSvg = d3.select("#canvas-svg").append("svg")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var SCALE = 1;
-var projection = d3.geoAlbersUsa();
+var projection = d3.geoAlbersUsa().translate([100, height/3]).scale(800);
 var path = d3.geoPath().projection(projection);
 
 $(function(){
@@ -75,9 +75,12 @@ function updateGraph(year){
       });
       */
       d3.json("https://s3-us-west-2.amazonaws.com/vida-public/geo/us.json", function(error, us) {
-        graphSvg.append("g")
+        var stateName,selectedState;
+        var map = graphSvg.append("g")
           .attr("class", "states-choropleth")
           .selectAll("path")
+          .attr("width", 400)
+          .attr("height", 400)
           .data(topojson.feature(us, us.objects.states).features)
           .enter().append("path")
           .attr("transform", "scale(" + SCALE + ")")
@@ -88,14 +91,17 @@ function updateGraph(year){
               if (color){ return color;} else { return "";}
             })
             */
-            .style("fill", "#696969")
             .attr("d", path)
             .on("click", function(d){
+              stateName = id_name_map[d.id];
+              //selectedState = stateName;
               d3.selectAll("#donut").remove();
               d3.select("#radarC").remove();
-               var stateName = id_name_map[d.id];
+               var selectedState = id_name_map[d.id];
                donutChart(year, stateName);
                RadarChart(year, stateName);
+               //console.log(this)
+               //$(this).attr("fill", "#FFFAFA");
               })
             .on("mousemove", function(d) {
                 $(this).attr("fill-opacity", "0.8");
@@ -103,6 +109,18 @@ function updateGraph(year){
             .on("mouseout", function() {
                 $(this).attr("fill-opacity", "1.0");
             });
+
+            d3.select(".states-choropleth").style("fill", function(d){
+
+              if(stateName !== selectedState) {
+                console.log("good")
+                return "#FFFAFA"
+              } else {
+                return "#696969";
+              }
+            });
+
+            d3.select(".states-choropleth").exit().remove()
 
         graphSvg.append("path")
             .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))

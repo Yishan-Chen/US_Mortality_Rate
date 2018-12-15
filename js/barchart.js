@@ -74,12 +74,13 @@ function barChart(year, flag, stateName){
     .data(data)
     .enter()
     .append("rect")
-    .transition()
-    .duration(1000)
+    //.transition()
+    //.duration(1000)
     .attr("x", 0)
     .attr("y", function(d){ return y(d.State) + gap; })
     .attr("name", function(d, i){ return d.State; })
-    .attr("width", function(d, i){ return x(d.Deaths); })
+    //.attr("width", function(d, i){ return x(d.Deaths); })
+    .attr("width", 0)
     .attr("height", bar_height)
     .attr("fill", function(d){
       if(d.State === selectedState) {
@@ -90,6 +91,12 @@ function barChart(year, flag, stateName){
         return colorScale(d.Deaths);
       }
     });
+
+    barchartsvg.selectAll("rect")
+    .transition()
+    .delay(function (d) {return Math.random()*1000;})
+    .duration(1000)
+    .attr("width", function(d, i){ return x(d.Deaths); });
 /*
     var text_deaths = barchartsvg.selectAll("text.score")
     .data(data)
