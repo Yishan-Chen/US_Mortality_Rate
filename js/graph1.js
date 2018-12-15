@@ -59,15 +59,21 @@ function updateGraph(year){
           state_value_map[d.State] = +d["Deaths"];
       });
       var data_entries = d3.entries(state_value_map);
+      /*
       var range = ["#ffd8d8","#910000"];
       var domain = d3.extent(data_entries, function(d){
         return d.value;
       });
       colorScale = d3.scaleLinear().domain(domain).range(range);
 
+      colorScale = d3.scaleOrdinal()
+      .range(["#ffd8d8"]);
+
+
       data_entries.forEach(function(d) {
         state_color_map[d.key] = colorScale(d.value);
       });
+      */
       d3.json("https://s3-us-west-2.amazonaws.com/vida-public/geo/us.json", function(error, us) {
         graphSvg.append("g")
           .attr("class", "states-choropleth")
@@ -75,11 +81,14 @@ function updateGraph(year){
           .data(topojson.feature(us, us.objects.states).features)
           .enter().append("path")
           .attr("transform", "scale(" + SCALE + ")")
+          /*
           .style("fill", function(d) {
               var stateName = id_name_map[d.id];
               var color = state_color_map[stateName];
               if (color){ return color;} else { return "";}
             })
+            */
+            .style("fill", "#696969")
             .attr("d", path)
             .on("click", function(d){
               d3.selectAll("#donut").remove();

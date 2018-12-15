@@ -10,3 +10,29 @@ body {
 .axis{
   stroke: #FFFAFA;
 }
+
+
+path.slice{
+	stroke-width:2px;
+}
+
+polyline{
+	opacity: .3;
+	stroke: #FFFAFA;
+	stroke-width: 2px;
+	fill: none;
+}
+
+#bubbleDiv {
+  float:left;
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#piechart {
+  float:right;
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
