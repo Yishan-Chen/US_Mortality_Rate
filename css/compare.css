@@ -2,30 +2,8 @@ body {
   background-color: black;
 }
 
-#row {
-  float:left;
-  width:60%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
 #canvas-svg {
-  float:right;
-  width:60%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-#cumulative {
-  float:right;
-  width:40%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-#select {
-  float:left;
-  width:40%;
+  float:center;
   display: flex;
   flex-wrap: wrap;
 }
@@ -44,6 +22,38 @@ body {
   flex-wrap: wrap;
 }
 
+#donutchartCompare1 {
+  float:left;
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#donutchartCompare2 {
+  float:left;
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#radarchartCompare1 {
+  float:left;
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#radarchartCompare2 {
+  float:right;
+  width: 50%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#search {
+  width: 45%;
+}
+
 .tick {
   opacity: 1;
   stroke: #FFFAFA;
@@ -54,6 +64,11 @@ body {
   opacity: 1;
 }
 
-.axis line {
+.axis line{
   stroke: #FFFAFA;
+}
+
+.text {
+  color: #FFFAFA;
+  font-size: 20px;
 }

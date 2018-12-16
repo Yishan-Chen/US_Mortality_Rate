@@ -1,7 +1,7 @@
 
-var margin = {top: 50, right: 300, bottom: 20, left: 300};
+var margin = {top: 20, right: 20, bottom: 20, left: 20};
 
-var width = 1600 - margin.left - margin.right,
+var width = 600 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
 
 var graphSvg = d3.select("#canvas-svg").append("svg")
@@ -11,12 +11,12 @@ var graphSvg = d3.select("#canvas-svg").append("svg")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var SCALE = 1;
-var projection = d3.geoAlbersUsa().translate([100, height/3]).scale(800);
+var projection = d3.geoAlbersUsa().translate([width/2.5, height/3]).scale(600);
 var path = d3.geoPath().projection(projection);
 
 $(function(){
   var data = d3.range(0, 18).map(function (d) { return new Date(1998 + d, 18, 3); });
-  var yearNumber
+  var yearNumber = "1999"
   var slider = d3.sliderHorizontal()
   .min(d3.min(data))
   .max(d3.max(data))
@@ -26,10 +26,14 @@ $(function(){
   .tickValues(data)
   .on('onchange', val => {
     yearNumber = String(d3.timeFormat('%Y')(val));
-    d3.select("#donut").remove();
-    d3.select("#radarC").remove();
-    d3.select("#text1").remove();
-    updateGraph(yearNumber)
+    //d3.select("#donut").remove();
+    //d3.select("#radarC").remove();
+    //d3.select("#text1").remove();
+    states = [];
+    d3.selectAll("#selectB").remove();
+    //console.log(states)
+    updateGraph(yearNumber);
+    selectPieChart(yearNumber,states);
   });
 
 var group = d3.select("div#slider").append("svg")
@@ -40,7 +44,10 @@ var group = d3.select("div#slider").append("svg")
 
 group.call(slider);
 
+var states = [];
 updateGraph("1999");
+selectPieChart(yearNumber,states);
+cumulativeBarChart(yearNumber,states)
 
 function updateGraph(year){
   d3.tsv("https://s3-us-west-2.amazonaws.com/vida-public/geo/us-state-names.tsv", function(error, names) {
@@ -59,23 +66,8 @@ function updateGraph(year){
           state_value_map[d.State] = +d["Deaths"];
       });
       var data_entries = d3.entries(state_value_map);
-      /*
-      var range = ["#ffd8d8","#910000"];
-      var domain = d3.extent(data_entries, function(d){
-        return d.value;
-      });
-      colorScale = d3.scaleLinear().domain(domain).range(range);
 
-      colorScale = d3.scaleOrdinal()
-      .range(["#ffd8d8"]);
-
-
-      data_entries.forEach(function(d) {
-        state_color_map[d.key] = colorScale(d.value);
-      });
-      */
       d3.json("https://s3-us-west-2.amazonaws.com/vida-public/geo/us.json", function(error, us) {
-        var stateName,selectedState;
         var map = graphSvg.append("g")
           .attr("class", "states-choropleth")
           .selectAll("path")
@@ -84,43 +76,18 @@ function updateGraph(year){
           .data(topojson.feature(us, us.objects.states).features)
           .enter().append("path")
           .attr("transform", "scale(" + SCALE + ")")
-          /*
-          .style("fill", function(d) {
-              var stateName = id_name_map[d.id];
-              var color = state_color_map[stateName];
-              if (color){ return color;} else { return "";}
-            })
-            */
             .attr("d", path)
+            .style("fill", "#696969")
             .on("click", function(d){
-              stateName = id_name_map[d.id];
-              //selectedState = stateName;
-              d3.selectAll("#donut").remove();
-              d3.select("#radarC").remove();
-               var selectedState = id_name_map[d.id];
-               donutChart(year, stateName);
-               RadarChart(year, stateName);
-               //console.log(this)
-               //$(this).attr("fill", "#FFFAFA");
-              })
-            .on("mousemove", function(d) {
-                $(this).attr("fill-opacity", "0.8");
-            })
-            .on("mouseout", function() {
-                $(this).attr("fill-opacity", "1.0");
-            });
-
-            d3.select(".states-choropleth").style("fill", function(d){
-
-              if(stateName !== selectedState) {
-                console.log("good")
-                return "#FFFAFA"
-              } else {
-                return "#696969";
-              }
-            });
-
-            d3.select(".states-choropleth").exit().remove()
+              var stateName = id_name_map[d.id];
+              //d3.selectAll("#donut").remove();
+              //d3.select("#radarC").remove();
+               //donutChart(year, stateName);
+               //RadarChart(year, stateName);
+               $(this).attr("fill-opacity", "0.5");
+               //console.log("good")
+               mouseOperation(stateName);
+             });
 
         graphSvg.append("path")
             .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
@@ -131,6 +98,14 @@ function updateGraph(year){
         });
 
       });
+    }
+
+    function mouseOperation(state){
+      states.push(state);
+      d3.selectAll("#selectB").remove();
+      selectPieChart(yearNumber,states);
+      //d3.selectAll("#cumulativeB").remove();
+      cumulativeBarChart(yearNumber,states);
     }
 
 });

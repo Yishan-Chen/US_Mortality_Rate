@@ -31,7 +31,7 @@ bubbleChart();
 addText(selected);
 
 function stackBarChart(flag) {
-  var margin = {top: 20, right: 20, bottom: 20, left: 120};
+  var margin = {top: 20, right: 20, bottom: 80, left: 120};
 
   var width = 1400 - margin.left - margin.right,
       height = 600 - margin.top - margin.bottom;
@@ -483,10 +483,8 @@ function pieChart(year){
   });
 }
 
-
 function bubbleChart(){
-  var margin = {top: 20, right: 170, bottom: 0, left: 50};
-
+  var margin = {top: 20, right: 170, bottom: 50, left: 50};
   var width = 800 - margin.left - margin.right,
       height = 500 - margin.top - margin.bottom;
 

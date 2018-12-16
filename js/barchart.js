@@ -70,16 +70,15 @@ function barChart(year, flag, stateName){
     .attr("stroke-width", 1)
     .attr("stroke", "white");
 
+    d3.selectAll("rect").remove();
+
     var rects = barchartsvg.selectAll("rect")
     .data(data)
     .enter()
     .append("rect")
-    //.transition()
-    //.duration(1000)
     .attr("x", 0)
     .attr("y", function(d){ return y(d.State) + gap; })
     .attr("name", function(d, i){ return d.State; })
-    //.attr("width", function(d, i){ return x(d.Deaths); })
     .attr("width", 0)
     .attr("height", bar_height)
     .attr("fill", function(d){
@@ -97,20 +96,7 @@ function barChart(year, flag, stateName){
     .delay(function (d) {return Math.random()*1000;})
     .duration(1000)
     .attr("width", function(d, i){ return x(d.Deaths); });
-/*
-    var text_deaths = barchartsvg.selectAll("text.score")
-    .data(data)
-    .enter()
-    .append("text")
-    .attr("x", function(d){ return x(d.Deaths) - margin.left})
-    .attr("y", function(d, i){ return y(d.State) + bar_height/2 + gap; })
-    .attr("stroke", "white")
-    .attr("dx", 80)
-    .attr("dy", ".36em")
-    .attr("font-family", "sans-serif")
-    .attr("font-weight", "bold")
-    .text(function(d){ return d.Deaths; });
-*/
+
     var text_name = barchartsvg.selectAll("text.name")
     .data(data)
     .enter()

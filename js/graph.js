@@ -180,15 +180,5 @@ function updateGraph(year, flag){
    barChart(yearNumber);
    updateGraph(yearNumber, filterFlag);
  }
-/*
- function handleClick(d, i){
-   if(d3.select(this)){
-     selected = this.id;
-     var thisState = id_name_map[selected];
-     console.log(thisState)
-     //d3.selectAll("#total").remove();
-     //total(selected);
-   }
- }
-*/
+
 });
