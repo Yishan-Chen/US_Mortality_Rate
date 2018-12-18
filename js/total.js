@@ -197,8 +197,8 @@ function addText(select){
       .style("font-size", 30)
       .style("font-family", "Times New Roman")
       .text("Year " + targetYear + " Death Number: " + targetDeaths)
-      .style("stroke", "#FFFAFA");
-
+      .style("stroke", "#FFFAFA")
+      .style("fill", "white");
     }
   });
 }
