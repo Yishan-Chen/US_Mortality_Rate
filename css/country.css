@@ -17,8 +17,9 @@ body {
 }
 */
 .labelName {
-    font-size: 1em;
-    font-style: italic;
+    font-size: 1.1em;
+    font-family: Arial;
+    fill: white;
 }
 
 path.slice{
