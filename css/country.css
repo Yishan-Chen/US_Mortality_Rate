@@ -63,20 +63,20 @@ polyline{
 
 #cancel {
   font-size: 30px;
-  background-color:#4CAF50;
+  background-color:black;
   border-radius: 8px;
   border: 2px solid #4CAF50;
   color: white;
-  width:250px;
+  width:200px;
 }
 
 #sort {
   font-size: 30px;
-  background-color:#4CAF50;
+  background-color:black;
   border-radius: 8px;
   border: 2px solid #4CAF50;
   color: white;
-  width:250px;
+  width:200px;
 }
 
 #cancel {

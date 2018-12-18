@@ -61,14 +61,10 @@ function stackBarChart(flag) {
 
     var keys = data.columns.slice(1);
 
-    //var z = d3.scaleSequential(d3.interpolateBlues)
-    //.domain([0, 100000]);
-
     if(flag){
       data.sort(function(a, b) { return b.total - a.total; });
     }
 
-    //data.sort(function(a, b) { return b.total - a.total; });
     x.domain(data.map(function(d) { return d.Year; }));
     y.domain([0, d3.max(data, function(d) { return d.total; })]).nice();
 
@@ -109,7 +105,8 @@ function stackBarChart(flag) {
     .attr("x", 2)
     .attr("y", y(y.ticks().pop()) + 0.5)
     .attr("dy", "0.32em")
-    .attr("fill", "#000")
+    .attr("stroke", "#FFFAFA")
+    .attr("fill", "white")
     .attr("font-weight", "bold")
     .attr("text-anchor", "start");
 
@@ -133,6 +130,7 @@ function stackBarChart(flag) {
         .attr("y", 9.5)
         .attr("dy", "0.32em")
         .attr("stroke", "#FFFAFA")
+        .attr("fill", "white")
         .text(function(d) { return d; });
   });
 
