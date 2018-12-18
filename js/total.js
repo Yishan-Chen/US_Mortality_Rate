@@ -309,6 +309,7 @@ function defaultPieChart(){
               .html(toolTipHTML(data))
               .style('font-size', '1em')
               .style('text-anchor', 'middle')
+              .attr("fill", "white")
               .style("stroke", "#FFFAFA");
               piesvg.append('circle')
               .attr('class', 'toolCircle')
@@ -328,7 +329,7 @@ function defaultPieChart(){
             if(key === "CauseName" || key === "Deaths")
             {
               var value = data.data[key];
-              if (i === 0) tip += '<tspan x="0">' + key + ': ' + value + '</tspan>';
+              if (i === 0) tip += '<tspan x="0">' + 'Cause: ' + value + '</tspan>';
               else tip += '<tspan x="0" dy="1.2em">' + key + ': ' + value + '</tspan>';
               i++;
             }

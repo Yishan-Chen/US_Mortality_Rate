@@ -76,6 +76,19 @@ body {
 #comparebutton {
   font-size: 20px;
   border-radius: 8px;
-  border: 2px solid #4CAF50;
+  background-color:black;
+  border: 2px solid white;
+  color: white;
   width:150px;
+}
+
+
+#comparebutton {
+  -webkit-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+}
+
+#comparebutton:hover {
+  background-color:#FFFAFA;
+  color: black;
 }

@@ -5,6 +5,7 @@ body {
 .axis text{
   font-size: 15px;
   opacity: 1;
+  color: white;
 }
 
 .axis{
@@ -65,7 +66,7 @@ polyline{
   font-size: 30px;
   background-color:black;
   border-radius: 8px;
-  border: 2px solid #4CAF50;
+  border: 2px solid white;
   color: white;
   width:200px;
 }
@@ -74,7 +75,7 @@ polyline{
   font-size: 30px;
   background-color:black;
   border-radius: 8px;
-  border: 2px solid #4CAF50;
+  border: 2px solid white;
   color: white;
   width:200px;
 }

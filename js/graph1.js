@@ -80,12 +80,7 @@ function updateGraph(year){
             .style("fill", "#696969")
             .on("click", function(d){
               var stateName = id_name_map[d.id];
-              //d3.selectAll("#donut").remove();
-              //d3.select("#radarC").remove();
-               //donutChart(year, stateName);
-               //RadarChart(year, stateName);
                $(this).attr("fill-opacity", "0.5");
-               //console.log("good")
                mouseOperation(stateName);
              });
 
