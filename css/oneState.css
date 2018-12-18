@@ -1,35 +1,40 @@
 body {
   background-color: black;
 }
-
-#row {
-  float:left;
-  width:60%;
-  display: flex;
-  flex-wrap: wrap;
+#container, .left, .right {
+    height: 80%;
 }
 
-#canvas-svg {
-  float:right;
-  width:60%;
-  display: flex;
-  flex-wrap: wrap;
+#container {
+  width:100%;
 }
 
-#cumulative {
-  float:right;
-  width:50%;
-  display: flex;
-  flex-wrap: wrap;
+#container .left {
+  position: relative;
+  float: left;
+  width: 40%;
+  height: 1000px;
 }
 
-#select {
-  float:left;
-  width:40%;
-  display: flex;
-  flex-wrap: wrap;
+#container .right{
+  position: relative;
+  float: right;
+  width: 60%;
+  /*margin-left: 10px;*/
 }
 
+#container .top{
+  position: absolute;
+  top: 0;
+  margin-left: 10%;
+}
+
+#container .bottom{
+  position: absolute;
+  bottom: 0;
+  margin-left: 20%;
+  margin-bottom: 40%;
+}
 .tick {
   opacity: 1;
   stroke: #FFFAFA;

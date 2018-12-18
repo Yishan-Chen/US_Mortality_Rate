@@ -1,7 +1,7 @@
 var margin = {top: 20, right: 20, bottom: 20, left: 120};
 
 var width = 800 - margin.left - margin.right,
-    height = 500 - margin.top - margin.bottom;
+    height = 1000 - margin.top - margin.bottom;
 
 var cumulativesvg = d3.select("#cumulative").append("svg")
 .attr("id", "cumulativeB")
@@ -11,8 +11,8 @@ var cumulativesvg = d3.select("#cumulative").append("svg")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var diseases = ["Alzheimer's disease","Cancer","CLRD","Diabetes","Heart disease","Influenza and pneumonia","Kidney disease","Stroke","Suicide","Unintentional injuries"]
-var bar_height = 30;
-var gap = 17;
+var bar_height = 40;
+var gap = 23;
 var startX = 35;
 
 var x = d3.scaleLinear()
@@ -24,6 +24,7 @@ var xAxisGroup = cumulativesvg.append("g")
                               .attr("transform", "translate(35,0)")
                               .call(xAxis);
 var diseases_dict = {}
+var num_dict = {}
 var culBarChartColor = "#af0000";
 for(var i = 0; i < diseases.length; i++){
   var svg = cumulativesvg
@@ -33,23 +34,35 @@ for(var i = 0; i < diseases.length; i++){
           .attr("height", bar_height)
           .attr("fill", culBarChartColor);
   diseases_dict[diseases[i]] = svg;
+
+  var numSvg = cumulativesvg
+          .append("text")
+          .attr("y", (bar_height + gap)*i+36)
+          .style('font-size', '1.0em')
+          .attr("font-family", "sans-serif")
+          .attr("fill", "white");
+  num_dict[diseases[i]] = numSvg;
 }
 
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+    
 var y = d3.scaleBand()
           .domain(diseases)
           .rangeRound([0, (bar_height + gap) * 10]);
 
 var yAxis = d3.axisLeft(y)
 var yAxisGroup = cumulativesvg.append("g")
-.attr("font-size","12px")
-.attr("transform", "translate(35,0)")
+.attr("transform", "translate(30,0)")
+.attr("font-size","15px")
 .call(yAxis);
 
 var line = cumulativesvg.append("line")
 .attr("x1", startX)
 .attr("x2", startX)
 .attr("y1", 0)
-.attr("y2", (bar_height + gap * 2) * 10)
+.attr("y2", (bar_height + gap * 2) * 8 - 30)
 .attr("stroke-width", 1)
 .attr("stroke", "white");
 
@@ -143,6 +156,12 @@ function cumulativeBarChart(year,states){
         .transition()
         .duration(750)
         .attr("width", function(d) { return x(reason_value[diseases[i]]);})
+
+        num_dict[diseases[i]]
+        .transition()
+        .duration(750)
+        .attr("x", function(d) { return startX + x(reason_value[diseases[i]]) + 10;})
+        .text(reason_value[diseases[i]]);
       }
     }
 

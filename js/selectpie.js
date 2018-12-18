@@ -38,8 +38,8 @@ var pieText = selectsvg.append('text')
                       .attr('dy', 0)
                       .style('font-size', '2.0em')
                       .style('text-anchor', 'middle')
-                      .style("stroke", "#910202")
-                      .style("fill", "#910202")
+                      .style("stroke", "white")
+                      .style("fill", "white")
 
 function selectPieChart(year,states){
   var csvFile = "data/NCHS_-_Leading_Causes_of_Death__United_States.csv";

@@ -1,7 +1,7 @@
 
 var margin = {top: 20, right: 20, bottom: 20, left: 20};
 
-var width = 600 - margin.left - margin.right,
+var width = 750 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
 
 var graphSvg = d3.select("#canvas-svg").append("svg")
@@ -11,7 +11,7 @@ var graphSvg = d3.select("#canvas-svg").append("svg")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var SCALE = 1;
-var projection = d3.geoAlbersUsa().translate([width/2.5, height/3]).scale(700);
+var projection = d3.geoAlbersUsa().translate([width/2.5, height/3]).scale(800);
 var path = d3.geoPath().projection(projection);
 
 $(function(){
