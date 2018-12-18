@@ -44,10 +44,6 @@ for(var i = 0; i < diseases.length; i++){
   num_dict[diseases[i]] = numSvg;
 }
 
-var xAxis = d3.svg.axis()
-    .scale(x)
-    .orient("bottom");
-    
 var y = d3.scaleBand()
           .domain(diseases)
           .rangeRound([0, (bar_height + gap) * 10]);
