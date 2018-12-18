@@ -10,6 +10,7 @@ var cumulativesvg = d3.select("#cumulative").append("svg")
 .append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
+var diseases = ["Alzheimer's disease","Cancer","CLRD","Diabetes","Heart disease","Influenza and pneumonia","Kidney disease","Stroke","Suicide","Unintentional injuries"]
 var bar_height = 30;
 var gap = 17;
 var startX = 35;
@@ -22,14 +23,24 @@ var xAxis = d3.axisTop(x).scale(x);
 var xAxisGroup = cumulativesvg.append("g")
                               .attr("transform", "translate(35,0)")
                               .call(xAxis);
+var diseases_dict = {}
+var culBarChartColor = "#af0000";
+for(var i = 0; i < diseases.length; i++){
+  var svg = cumulativesvg
+          .append("rect")
+          .attr("x", startX)
+          .attr("y", (bar_height + gap)*i+10)
+          .attr("height", bar_height)
+          .attr("fill", culBarChartColor);
+  diseases_dict[diseases[i]] = svg;
+}
 
 var y = d3.scaleBand()
-          .domain(["Alzheimer's disease","Cancer","CLRD","Diabetes","Heart disease","Influenza and pneumonia","Kidney disease","Stroke","Suicide","Unintentional injuries"])
+          .domain(diseases)
           .rangeRound([0, (bar_height + gap) * 10]);
 
 var yAxis = d3.axisLeft(y)
 var yAxisGroup = cumulativesvg.append("g")
-.transition()
 .attr("font-size","12px")
 .attr("transform", "translate(35,0)")
 .call(yAxis);
@@ -127,77 +138,12 @@ function cumulativeBarChart(year,states){
       data.push(total9);
       data.push(total10);
 
-
-      culBarChartColor = "#af0000";
-      cumulativesvg.append("rect")
-      .attr("x", startX)
-      .attr("y", 10)
-      .attr("width", function(d) { return x(reason_value["Alzheimer's disease"]);})
-      .attr("height", bar_height)
-      .attr("fill", culBarChartColor);
-
-      cumulativesvg.append("rect")
-      .attr("x", startX)
-      .attr("y", (bar_height + gap)*1+10)
-      .attr("width", function(d) { return x(reason_value["Cancer"]);})
-      .attr("height", bar_height)
-      .attr("fill", culBarChartColor);
-
-      cumulativesvg.append("rect")
-      .attr("x", startX)
-      .attr("y", (bar_height + gap)*2+10)
-      .attr("width", function(d) { return x(reason_value["CLRD"]);})
-      .attr("height", bar_height)
-      .attr("fill", culBarChartColor);
-
-      cumulativesvg.append("rect")
-      .attr("x", startX)
-      .attr("y", (bar_height + gap)*3+10)
-      .attr("width", function(d) { return x(reason_value["Diabetes"]);})
-      .attr("height", bar_height)
-      .attr("fill", culBarChartColor);
-
-      cumulativesvg.append("rect")
-      .attr("x", startX)
-      .attr("y", (bar_height + gap)*4+10)
-      .attr("width", function(d) { return x(reason_value["Heart disease"]);})
-      .attr("height", bar_height)
-      .attr("fill", culBarChartColor);
-
-      cumulativesvg.append("rect")
-      .attr("x", startX)
-      .attr("y", (bar_height + gap)*5+10)
-      .attr("width", function(d) { return x(reason_value["Influenza and pneumonia"]);})
-      .attr("height", bar_height)
-      .attr("fill", culBarChartColor);
-
-      cumulativesvg.append("rect")
-      .attr("x", startX)
-      .attr("y", (bar_height + gap)*6+10)
-      .attr("width", function(d) { return x(reason_value["Kidney disease"]);})
-      .attr("height", bar_height)
-      .attr("fill", culBarChartColor);
-
-      cumulativesvg.append("rect")
-      .attr("x", startX)
-      .attr("y", (bar_height + gap)*7+10)
-      .attr("width", function(d) { return x(reason_value["Stroke"]);})
-      .attr("height", bar_height)
-      .attr("fill", culBarChartColor);
-
-      cumulativesvg.append("rect")
-      .attr("x", startX)
-      .attr("y", (bar_height + gap)*8+10)
-      .attr("width", function(d) { return x(reason_value["Suicide"]);})
-      .attr("height", bar_height)
-      .attr("fill", culBarChartColor);
-
-      cumulativesvg.append("rect")
-      .attr("x", startX)
-      .attr("y", (bar_height + gap)*9+10)
-      .attr("width", function(d) { return x(reason_value["Unintentional injuries"]);})
-      .attr("height", bar_height)
-      .attr("fill", culBarChartColor);
+      for(var i = 0; i < diseases.length; i++){
+        diseases_dict[diseases[i]]
+        .transition()
+        .duration(750)
+        .attr("width", function(d) { return x(reason_value[diseases[i]]);})
+      }
     }
 
   });
