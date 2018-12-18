@@ -82,7 +82,7 @@ function RadarCompare1(year, state) {
          .attr("x", 4)
          .attr("y", function(d){return -d*radius/cfg.levels;})
          .attr("dy", "0.4em")
-         .style("font-size", "10px")
+         .style("font-size", "15px")
          .attr("fill", "#737373")
          .attr("stroke", "#FFFAFA")
          .text(function(d,i) { return parseInt(Format(maxValue * d/cfg.levels)) + "%"; });
@@ -106,7 +106,7 @@ function RadarCompare1(year, state) {
       //Append the labels at each axis
       axis.append("text")
         .attr("class", "legend")
-        .style("font-size", "11px")
+        .style("font-size", "12px")
         .attr("text-anchor", "middle")
         .attr("stroke", "#FFFAFA")
         .attr("dy", "0.35em")
@@ -319,7 +319,7 @@ function RadarCompare2(year, state) {
          .attr("x", 4)
          .attr("y", function(d){return -d*radius/cfg.levels;})
          .attr("dy", "0.4em")
-         .style("font-size", "10px")
+         .style("font-size", "15px")
          .attr("fill", "#737373")
          .attr("stroke", "#FFFAFA")
          .text(function(d,i) { return parseInt(Format(maxValue * d/cfg.levels)) + "%"; });
@@ -343,7 +343,7 @@ function RadarCompare2(year, state) {
       //Append the labels at each axis
       axis.append("text")
         .attr("class", "legend")
-        .style("font-size", "11px")
+        .style("font-size", "12px")
         .attr("text-anchor", "middle")
         .attr("stroke", "#FFFAFA")
         .attr("dy", "0.35em")
