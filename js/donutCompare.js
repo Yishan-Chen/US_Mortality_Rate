@@ -86,6 +86,8 @@ function donutCompare1(year, state){
       .attr("dy", ".35em")
       .attr("text-anchor", "middle")
       .attr("stroke", "#FFFAFA")
+      .attr("fill", "white")
+      .attr("font-size", "20px")
       .text(Math.round(score));
 
   });
@@ -180,6 +182,7 @@ function donutCompare2(year, state){
       .attr("dy", ".35em")
       .attr("text-anchor", "middle")
       .attr("stroke", "#FFFAFA")
+      .attr("fill", "white")
       .text(Math.round(score));
 
   });

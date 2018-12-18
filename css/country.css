@@ -2,8 +2,8 @@ body {
   background-color: black;
 }
 
-.axis{
-  font-size: 15;
+.axis text{
+  font-size: 15px;
   opacity: 1;
 }
 
