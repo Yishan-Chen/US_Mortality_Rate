@@ -43,7 +43,7 @@ function selectPieChart(year,states){
       var percentFormat = d3.format(',.2%');
 
       var colorScale = d3.scaleOrdinal()
-      .range(["#3c3c3c", "#696969"]);
+      .range(["#770000", "#696969"]);
 
       var radius = Math.min(width, height) / 2;
 
@@ -74,7 +74,8 @@ function selectPieChart(year,states){
       .attr('dy', 0)
       .style('font-size', '2.0em')
       .style('text-anchor', 'middle')
-      .style("stroke", "#FFFAFA")
+      .style("stroke", "#910202")
+      .style("fill", "#910202")
       .text(function(d){
         return percentFormat(floatFormat(data[0]/total));
       });

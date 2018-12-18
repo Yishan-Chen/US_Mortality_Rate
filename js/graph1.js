@@ -11,7 +11,7 @@ var graphSvg = d3.select("#canvas-svg").append("svg")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 var SCALE = 1;
-var projection = d3.geoAlbersUsa().translate([width/2.5, height/3]).scale(600);
+var projection = d3.geoAlbersUsa().translate([width/2.5, height/3]).scale(700);
 var path = d3.geoPath().projection(projection);
 
 $(function(){
@@ -26,12 +26,8 @@ $(function(){
   .tickValues(data)
   .on('onchange', val => {
     yearNumber = String(d3.timeFormat('%Y')(val));
-    //d3.select("#donut").remove();
-    //d3.select("#radarC").remove();
-    //d3.select("#text1").remove();
     states = [];
     d3.selectAll("#selectB").remove();
-    //console.log(states)
     updateGraph(yearNumber);
     selectPieChart(yearNumber,states);
   });
@@ -80,12 +76,7 @@ function updateGraph(year){
             .style("fill", "#696969")
             .on("click", function(d){
               var stateName = id_name_map[d.id];
-              //d3.selectAll("#donut").remove();
-              //d3.select("#radarC").remove();
-               //donutChart(year, stateName);
-               //RadarChart(year, stateName);
-               $(this).attr("fill-opacity", "0.5");
-               //console.log("good")
+               $(this).css({ fill: "#770000" });
                mouseOperation(stateName);
              });
 
@@ -104,7 +95,6 @@ function updateGraph(year){
       states.push(state);
       d3.selectAll("#selectB").remove();
       selectPieChart(yearNumber,states);
-      //d3.selectAll("#cumulativeB").remove();
       cumulativeBarChart(yearNumber,states);
     }
 

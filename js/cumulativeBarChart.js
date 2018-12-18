@@ -1,6 +1,6 @@
 var margin = {top: 20, right: 20, bottom: 20, left: 120};
 
-var width = 650 - margin.left - margin.right,
+var width = 800 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
 var cumulativesvg = d3.select("#cumulative").append("svg")
@@ -9,6 +9,38 @@ var cumulativesvg = d3.select("#cumulative").append("svg")
 .attr("height", height + margin.top + margin.bottom)
 .append("g")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+var bar_height = 30;
+var gap = 17;
+var startX = 35;
+
+var x = d3.scaleLinear()
+.domain([0, 800000])
+.range([0, width-startX])
+
+var xAxis = d3.axisTop(x).scale(x);
+var xAxisGroup = cumulativesvg.append("g")
+                              .attr("transform", "translate(35,0)")
+                              .call(xAxis);
+
+var y = d3.scaleBand()
+          .domain(["Alzheimer's disease","Cancer","CLRD","Diabetes","Heart disease","Influenza and pneumonia","Kidney disease","Stroke","Suicide","Unintentional injuries"])
+          .rangeRound([0, (bar_height + gap) * 10]);
+
+var yAxis = d3.axisLeft(y)
+var yAxisGroup = cumulativesvg.append("g")
+.transition()
+.attr("font-size","12px")
+.attr("transform", "translate(35,0)")
+.call(yAxis);
+
+var line = cumulativesvg.append("line")
+.attr("x1", startX)
+.attr("x2", startX)
+.attr("y1", 0)
+.attr("y2", (bar_height + gap * 2) * 10)
+.attr("stroke-width", 1)
+.attr("stroke", "white");
 
 function cumulativeBarChart(year,states){
 
@@ -24,6 +56,7 @@ function cumulativeBarChart(year,states){
       var reason_value2 = {};
       var data1 = csv.filter(csv => csv.Year === year && csv.CauseName !== "All causes");
       data1.forEach(function(d){
+
         d.State = d.State;
         for(var i=0; i < states.length;i++){
           if(states[i] === d.State){
@@ -94,104 +127,77 @@ function cumulativeBarChart(year,states){
       data.push(total9);
       data.push(total10);
 
-      var bar_height = 30;
-      var gap = 10;
 
-      var x = d3.scaleLinear()
-      .domain([0, 800000])
-      .range([0, width])
-
-      var xAxis = d3.axisTop(x)
-      .scale(x);
-      var xAxisGroup = cumulativesvg.append("g")
-      .call(xAxis);
-
-      var y = d3.scaleBand()
-      .domain(["Alzheimer's disease","Cancer","CLRD","Diabetes","Heart disease","Influenza and pneumonia","Kidney disease","Stroke","Suicide","Unintentional injuries"])
-      .rangeRound([0, (bar_height + gap) * data.length]);
-
-      var yAxis = d3.axisLeft(y)
-      var yAxisGroup = cumulativesvg.append("g")
-      .transition()
-      .call(yAxis);
-
-      var line = cumulativesvg.append("line")
-      .attr("x1", 0)
-      .attr("x2", 0)
-      .attr("y1", 0)
-      .attr("y2", (bar_height + gap * 2) * data.length)
-      .attr("stroke-width", 1)
-      .attr("stroke", "white");
-
+      culBarChartColor = "#af0000";
       cumulativesvg.append("rect")
-      .attr("x", 0)
-      .attr("y", 0)
+      .attr("x", startX)
+      .attr("y", 10)
       .attr("width", function(d) { return x(reason_value["Alzheimer's disease"]);})
       .attr("height", bar_height)
-      .attr("fill", "#FFFAFA");
+      .attr("fill", culBarChartColor);
 
       cumulativesvg.append("rect")
-      .attr("x", 0)
-      .attr("y", 40)
+      .attr("x", startX)
+      .attr("y", (bar_height + gap)*1+10)
       .attr("width", function(d) { return x(reason_value["Cancer"]);})
       .attr("height", bar_height)
-      .attr("fill", "#FFFAFA");
+      .attr("fill", culBarChartColor);
 
       cumulativesvg.append("rect")
-      .attr("x", 0)
-      .attr("y", 80)
+      .attr("x", startX)
+      .attr("y", (bar_height + gap)*2+10)
       .attr("width", function(d) { return x(reason_value["CLRD"]);})
       .attr("height", bar_height)
-      .attr("fill", "#FFFAFA");
+      .attr("fill", culBarChartColor);
 
       cumulativesvg.append("rect")
-      .attr("x", 0)
-      .attr("y", 120)
+      .attr("x", startX)
+      .attr("y", (bar_height + gap)*3+10)
       .attr("width", function(d) { return x(reason_value["Diabetes"]);})
       .attr("height", bar_height)
-      .attr("fill", "#FFFAFA");
+      .attr("fill", culBarChartColor);
 
       cumulativesvg.append("rect")
-      .attr("x", 0)
-      .attr("y", 160)
+      .attr("x", startX)
+      .attr("y", (bar_height + gap)*4+10)
       .attr("width", function(d) { return x(reason_value["Heart disease"]);})
       .attr("height", bar_height)
-      .attr("fill", "#FFFAFA");
+      .attr("fill", culBarChartColor);
 
       cumulativesvg.append("rect")
-      .attr("x", 0)
-      .attr("y", 200)
+      .attr("x", startX)
+      .attr("y", (bar_height + gap)*5+10)
       .attr("width", function(d) { return x(reason_value["Influenza and pneumonia"]);})
       .attr("height", bar_height)
-      .attr("fill", "#FFFAFA");
+      .attr("fill", culBarChartColor);
 
       cumulativesvg.append("rect")
-      .attr("x", 0)
-      .attr("y", 240)
+      .attr("x", startX)
+      .attr("y", (bar_height + gap)*6+10)
       .attr("width", function(d) { return x(reason_value["Kidney disease"]);})
       .attr("height", bar_height)
-      .attr("fill", "#FFFAFA");
+      .attr("fill", culBarChartColor);
 
       cumulativesvg.append("rect")
-      .attr("x", 0)
-      .attr("y", 280)
+      .attr("x", startX)
+      .attr("y", (bar_height + gap)*7+10)
       .attr("width", function(d) { return x(reason_value["Stroke"]);})
       .attr("height", bar_height)
-      .attr("fill", "#FFFAFA");
+      .attr("fill", culBarChartColor);
 
       cumulativesvg.append("rect")
-      .attr("x", 0)
-      .attr("y", 320)
+      .attr("x", startX)
+      .attr("y", (bar_height + gap)*8+10)
       .attr("width", function(d) { return x(reason_value["Suicide"]);})
       .attr("height", bar_height)
-      .attr("fill", "#FFFAFA");
+      .attr("fill", culBarChartColor);
 
       cumulativesvg.append("rect")
-      .attr("x", 0)
-      .attr("y", 360)
+      .attr("x", startX)
+      .attr("y", (bar_height + gap)*9+10)
       .attr("width", function(d) { return x(reason_value["Unintentional injuries"]);})
       .attr("height", bar_height)
-      .attr("fill", "#FFFAFA");
+      .attr("fill", culBarChartColor);
     }
 
   });

@@ -18,7 +18,7 @@ body {
 
 #cumulative {
   float:right;
-  width:40%;
+  width:50%;
   display: flex;
   flex-wrap: wrap;
 }
@@ -30,28 +30,15 @@ body {
   flex-wrap: wrap;
 }
 
-#donutchart {
-  float:left;
-  width: 50%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
-#radarchart {
-  float:right;
-  width: 50%;
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .tick {
   opacity: 1;
   stroke: #FFFAFA;
 }
 
 .axis text{
-  font-size: 15;
-  opacity: 1;
+  font-family: "sans serif";
+  font-size: 30;
+  /*opacity: 1;*/
 }
 
 .axis line {
