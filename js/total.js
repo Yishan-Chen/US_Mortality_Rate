@@ -525,7 +525,7 @@ function bubbleChart(){
     .attr("transform", function(d){ return "translate(" + d.x + "," + d.y + ")"; });
 
     node.append("title")
-    .text(function(d) {return d.data.Year;});
+    .text(function(d) {return "Year " + d.data.Year;});
 
     node.append("circle")
     .attr("class", "topBubble")
@@ -541,7 +541,7 @@ function bubbleChart(){
     .style("text-anchor", "middle")
     .text(function(d) { return d.data.Deaths;})
     .attr("font-family", "sans-serif")
-    .attr("font-size", function(d){return d.r/4.5;})
+    .attr("font-size", function(d){return d.r/3.5;})
     .attr("fill", "white");
 
     d3.select(self.frameElement)
