@@ -93,7 +93,7 @@ function updateGraph(year){
 
     function mouseOperation(state){
       states.push(state);
-      d3.selectAll("#selectB").remove();
+      // d3.selectAll("#selectB").remove();
       selectPieChart(yearNumber,states);
       cumulativeBarChart(yearNumber,states);
     }

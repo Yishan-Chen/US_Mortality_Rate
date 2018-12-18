@@ -1,16 +1,47 @@
+var margin = {top: 30, right: 20, bottom: 20, left: 20};
+
+var width = 380 - margin.left - margin.right,
+    height = 380 - margin.top - margin.bottom;
+
+var selectsvg = d3.select("#select").append("svg")
+.attr("id", "selectB")
+.attr("width", width + margin.left + margin.right)
+.attr("height", height + margin.top + margin.bottom)
+.append("g")
+.attr("transform", "translate(" + (width/2 + margin.left) + "," + (height/2 + margin.top) + ")");
+
+var cornerRadius = 3;
+var padAngle = 0.015;
+var floatFormat = d3.format('.4r');
+var percentFormat = d3.format(',.2%');
+
+var colorScale = d3.scaleOrdinal()
+.range(["#770000", "#696969"]);
+
+var radius = Math.min(width, height) / 2;
+
+var pie = d3.pie();
+
+var arc = d3.arc()
+            .outerRadius(radius * 0.8)
+            .innerRadius(radius * 0.4)
+            .cornerRadius(cornerRadius)
+            .padAngle(padAngle);
+
+var outerArc = d3.arc()
+                  .outerRadius(radius * 0.9)
+                  .innerRadius(radius * 0.9);
+var slice = selectsvg
+      .selectAll('path');
+var pieText = selectsvg.append('text')
+                      .attr('class', 'toolCircle')
+                      .attr('dy', 0)
+                      .style('font-size', '2.0em')
+                      .style('text-anchor', 'middle')
+                      .style("stroke", "#910202")
+                      .style("fill", "#910202")
+
 function selectPieChart(year,states){
-  var margin = {top: 30, right: 20, bottom: 20, left: 20};
-
-  var width = 380 - margin.left - margin.right,
-      height = 380 - margin.top - margin.bottom;
-
-  var selectsvg = d3.select("#select").append("svg")
-  .attr("id", "selectB")
-  .attr("width", width + margin.left + margin.right)
-  .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-  .attr("transform", "translate(" + (width/2 + margin.left) + "," + (height/2 + margin.top) + ")");
-
   var csvFile = "data/NCHS_-_Leading_Causes_of_Death__United_States.csv";
   d3.csv(csvFile, function (error, csv) {
     if(error){
@@ -37,46 +68,14 @@ function selectPieChart(year,states){
       data.push(cumulative);
       data.push(rest);
 
-      var cornerRadius = 3;
-      var padAngle = 0.015;
-      var floatFormat = d3.format('.4r');
-      var percentFormat = d3.format(',.2%');
+      slice.data(pie(data))
+            .enter()
+            .append('path')
+            .style("fill", function(d) { return colorScale(d.data); })
+            .attr('d', arc);
 
-      var colorScale = d3.scaleOrdinal()
-      .range(["#770000", "#696969"]);
-
-      var radius = Math.min(width, height) / 2;
-
-      var pie = d3.pie();
-
-      var arc = d3.arc()
-      .outerRadius(radius * 0.8)
-      .innerRadius(radius * 0.4)
-      .cornerRadius(cornerRadius)
-      .padAngle(padAngle);
-
-      var outerArc = d3.arc()
-      .outerRadius(radius * 0.9)
-      .innerRadius(radius * 0.9);
-
-      var slice = selectsvg
-      .selectAll('path')
-      .data(pie(data))
-      .enter()
-      .append('path')
-      .transition()
-      .duration(1000)
-      .style("fill", function(d) { return colorScale(d.data); })
-      .attr('d', arc);
-
-      selectsvg.append('text')
-      .attr('class', 'toolCircle')
-      .attr('dy', 0)
-      .style('font-size', '2.0em')
-      .style('text-anchor', 'middle')
-      .style("stroke", "#910202")
-      .style("fill", "#910202")
-      .text(function(d){
+      
+      pieText.text(function(d){
         return percentFormat(floatFormat(data[0]/total));
       });
     }
