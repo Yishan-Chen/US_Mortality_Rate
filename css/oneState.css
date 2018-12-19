@@ -61,9 +61,9 @@ body {
 
 .axis text{
   font-family: "sans serif";
+  font-size: 30;
   font-size: 15px;
   fill: white;
-  /*opacity: 1;*/
 }
 
 .axis line {
