@@ -52,7 +52,6 @@ function selectPieChart(year,states){
       var data = [];
       var data1 = csv.filter(csv => csv.Year === year && csv.CauseName === "All causes");
       data1.forEach(function(d){
-        d.State = d.State;
         for(var i=0; i<states.length;i++){
           if(states[i] === d.State){
             d.Deaths = parseFloat(d.Deaths);

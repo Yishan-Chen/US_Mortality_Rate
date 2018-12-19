@@ -1,6 +1,6 @@
 var margin = {top: 20, right: 20, bottom: 20, left: 120};
 
-var width = 800 - margin.left - margin.right,
+var width = 900 - margin.left - margin.right,
     height = 1000 - margin.top - margin.bottom;
 
 var cumulativesvg = d3.select("#cumulative").append("svg")
@@ -13,16 +13,16 @@ var cumulativesvg = d3.select("#cumulative").append("svg")
 var diseases = ["Alzheimer's disease","Cancer","CLRD","Diabetes","Heart disease","Influenza and pneumonia","Kidney disease","Stroke","Suicide","Unintentional injuries"]
 var bar_height = 40;
 var gap = 23;
-var startX = 35;
+var startX = 40;
 
 var x = d3.scaleLinear()
 .domain([0, 800000])
-.range([0, width-startX])
+.range([0, width-startX-20])
 
 var xAxis = d3.axisTop(x).scale(x);
 var xAxisGroup = cumulativesvg.append("g")
-                              .attr("transform", "translate(35,0)")
-                              .attr("fill", "white")
+                              .attr("class", "axis")
+                              .attr("transform", "translate(40,0)")
                               .call(xAxis);
 var diseases_dict = {}
 var num_dict = {}
@@ -51,8 +51,8 @@ var y = d3.scaleBand()
 
 var yAxis = d3.axisLeft(y)
 var yAxisGroup = cumulativesvg.append("g")
-.attr("transform", "translate(30,0)")
-.attr("font-size","15px")
+.attr("class", "yaxis")
+.attr("transform", "translate(40,0)")
 .call(yAxis);
 
 var line = cumulativesvg.append("line")
