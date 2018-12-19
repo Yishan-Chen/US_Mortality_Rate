@@ -96,6 +96,7 @@ function updateGraph(year){
       // d3.selectAll("#selectB").remove();
       selectPieChart(yearNumber,states);
       cumulativeBarChart(yearNumber,states);
+      updateLiquid(yearNumber,states);
     }
 
 });
