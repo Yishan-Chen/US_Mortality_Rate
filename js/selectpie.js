@@ -24,7 +24,7 @@ var pie = d3.pie();
 
 var arc = d3.arc()
             .outerRadius(radius * 0.8)
-            .innerRadius(radius * 0.4)
+            .innerRadius(radius * 0.6)
             .cornerRadius(cornerRadius)
             .padAngle(padAngle);
 
@@ -70,7 +70,14 @@ function selectPieChart(year,states){
       slice.data(pie(data))
             .enter()
             .append('path')
-            .style("fill", function(d) { return colorScale(d.data); })
+            .style("fill", function(d) { 
+                if(cumulative !== 0){
+                  return colorScale(d.data);
+                }
+                else{
+                  return "#5e605f";
+                }
+             })
             .attr('d', arc);
 
       

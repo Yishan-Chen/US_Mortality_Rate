@@ -27,7 +27,8 @@ $(function(){
   .on('onchange', val => {
     yearNumber = String(d3.timeFormat('%Y')(val));
     states = [];
-    d3.selectAll("#selectB").remove();
+    // d3.selectAll("#selectB").remove();
+    selectPieChart(yearNumber,[]);
     updateGraph(yearNumber);
     selectPieChart(yearNumber,states);
   });
