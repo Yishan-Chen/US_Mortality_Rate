@@ -11,12 +11,7 @@ body {
 .axis{
   stroke: #FFFAFA;
 }
-/*
-.labelName tspan {
-    font-style: normal;
-    font-weight: 500;
-}
-*/
+
 .labelName {
     font-size: 1.1em;
     font-family: Arial;
@@ -50,20 +45,28 @@ polyline{
 
 #buttonArea {
   float:left;
-  width: 10%;
+  width: 11%;
   display: flex;
   flex-wrap: wrap;
 }
 
+#buttonArea {
+  border:1px solid white;
+  color:white;
+  font-size: 15px;
+  font-family: Tahoma, Geneva, sans-serif;
+  opacity: 0.8;
+}
+
 #stack {
   float:right;
-  width: 90%;
+  width: 89%;
   display: flex;
   flex-wrap: wrap;
 }
 
 #cancel {
-  font-size: 30px;
+  font-size: 20px;
   background-color:black;
   border-radius: 8px;
   border: 2px solid white;
@@ -72,7 +75,7 @@ polyline{
 }
 
 #sort {
-  font-size: 30px;
+  font-size: 20px;
   background-color:black;
   border-radius: 8px;
   border: 2px solid white;
