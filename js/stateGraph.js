@@ -13,6 +13,7 @@ var graphSvg = d3.select("#canvas-svg").append("svg")
 var SCALE = 1;
 var projection = d3.geoAlbersUsa().translate([width/2.5, height/3]).scale(800);
 var path = d3.geoPath().projection(projection);
+var state_clicked = {}
 
 $(function(){
   var data = d3.range(0, 18).map(function (d) { return new Date(1998 + d, 18, 3); });
@@ -29,6 +30,8 @@ $(function(){
     states = [];
     // d3.selectAll("#selectB").remove();
     selectPieChart(yearNumber,[]);
+    cumulativeBarChart(yearNumber, []);
+    initialLiquid();
     updateGraph(yearNumber);
     selectPieChart(yearNumber,states);
   });
@@ -77,8 +80,16 @@ function updateGraph(year){
             .style("fill", "#696969")
             .on("click", function(d){
               var stateName = id_name_map[d.id];
-               $(this).css({ fill: "#770000" });
-               mouseOperation(stateName);
+              if(stateName in state_clicked && state_clicked[stateName]){
+                $(this).css({ fill: "#6d6d6c" });
+                mouseOperation(null,stateName);
+                state_clicked[stateName] = false;
+              }
+              else{
+                $(this).css({ fill: "#770000" });
+                mouseOperation(stateName,null);
+                state_clicked[stateName] = true;
+              }
              });
 
         graphSvg.append("path")
@@ -92,8 +103,9 @@ function updateGraph(year){
       });
     }
 
-    function mouseOperation(state){
-      states.push(state);
+    function mouseOperation(state, unclicked_state){
+      if(state) states.push(state);
+      if(unclicked_state) states.splice(states.indexOf(unclicked_state),1);
       // d3.selectAll("#selectB").remove();
       selectPieChart(yearNumber,states);
       cumulativeBarChart(yearNumber,states);

@@ -8,33 +8,36 @@ var diseases_gauge = {}
 var circle_color = ["#910101","#c41f1f","#d35050","#f27b7b"];
 var wave_color = ["#b20101","#ba2525","#d16060","#f78a8a"];
 
-for(var i=0; i<4; i++){
-    d3.select("#container2").append("svg").attr("width", 75).attr("height", height + margin.top + margin.bottom);
-    var svg = d3.select("#container2").append("svg")
-                .attr("id", liquid_disease[i].replace(/\s/g,""))
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-                .append("g")
-                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+initialLiquid();
 
-    diseases_svg[liquid_disease[i]] = svg;
+function initialLiquid(){
+    for(var i=0; i<4; i++){
+        d3.select("#container2").append("svg").attr("width", 75).attr("height", height + margin.top + margin.bottom);
+        var svg = d3.select("#container2").append("svg")
+                    .attr("id", liquid_disease[i].replace(/\s/g,""))
+                    .attr("width", width + margin.left + margin.right)
+                    .attr("height", height + margin.top + margin.bottom)
+                    .append("g")
+                    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    var config = liquidFillGaugeDefaultSettings();
-    config.circleColor = circle_color[i];
-    config.textColor = wave_color[i];
-    config.waveTextColor = "#FFAAAA";
-    config.waveColor = wave_color[i];
-    config.circleThickness = 0.1;
-    config.textVertPosition = 0.5;
-    config.waveAnimateTime = 1000;
-    config.waveCount = 4-i;
-    var gauge = loadLiquidFillGauge(liquid_disease[i], 0, config);
+        diseases_svg[liquid_disease[i]] = svg;
 
-    diseases_gauge[liquid_disease[i]] = gauge
+        var config = liquidFillGaugeDefaultSettings();
+        config.circleColor = circle_color[i];
+        config.textColor = wave_color[i];
+        config.waveTextColor = "#FFAAAA";
+        config.waveColor = wave_color[i];
+        config.circleThickness = 0.1;
+        config.textVertPosition = 0.5;
+        config.waveAnimateTime = 1000;
+        config.waveCount = 4-i;
+        var gauge = loadLiquidFillGauge(liquid_disease[i], 0, config);
+
+        diseases_gauge[liquid_disease[i]] = gauge
+    }
 }
 
-
-function updateLiquid(year, states){
+function updateLiquid(year, states){ 
     var csvFile = "data/NCHS_-_Leading_Causes_of_Death__United_States.csv";
     var total = 0;
     var cumulative = 0;

@@ -3,6 +3,41 @@ var margin = {top: 50, right: 0, bottom: 50, left: 0};
 var width = 1100 - margin.left - margin.right,
     height = 600 - margin.top - margin.bottom;
 
+var scaleDomain = [0,40000,80000,120000,160000,200000,240000];
+var scaleRange = ["#ffd8d8", "f9acac", "#dd5a5a", "d33d3d","#b21010","#910000"];
+
+var scaleChartHeight = 30;
+var rectWidth = 50;
+
+var rectScale = d3.scaleLinear()
+                  .domain([0, 11])
+                  .range([0,width]);
+
+var scaleSvg = d3.select("#canvas-svg").append('svg')
+                   .attr('width', width)
+                   .attr('height', 40)
+                   .append('g')
+                   .attr("transform", "translate(" + this.margin.left + ",0)");
+
+scaleSvg.selectAll('rect')
+            .data(scaleRange)
+            .enter()
+            .append('rect')
+            .attr('x', function(d,i){return rectScale(i);})
+            .attr('y', 0)
+            .attr('width', rectWidth)
+            .attr('height', 10)
+            .attr('fill', function(d){return d});
+
+// scaleSvg.selectAll('text')
+//     .data(range)
+//     .enter()
+//     .append('text')
+//     .attr('x', function(d,i){return rectScale(i);})
+//     .attr('y', scaleChartHeight+30)
+//     .text(function(d,i) {return scaleDomain[i] + ' to ' + scaleDomain[i+1]})
+//     .attr('fill', 'white');
+
 var graphSvg = d3.select("#canvas-svg").append("svg")
 .attr("width", width + margin.left + margin.right)
 .attr("height", height + margin.top + margin.bottom)
@@ -47,6 +82,7 @@ barChart("1999", filterFlag);
 
 function updateGraph(year, flag){
   d3.tsv("https://s3-us-west-2.amazonaws.com/vida-public/geo/us-state-names.tsv", function(error, names) {
+
     name_id_map = {};
     id_name_map = {};
     for (var i = 0; i < names.length; i++) {
@@ -98,7 +134,6 @@ function updateGraph(year, flag){
         .on("click", function(d){
           d3.selectAll("#barChart").remove();
            var stateName = id_name_map[d.id];
-           console.log(stateName)
            barChart(year, false, stateName);
           })
         .on("mousemove", function(d) {

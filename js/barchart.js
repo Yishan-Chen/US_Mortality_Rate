@@ -83,9 +83,9 @@ function barChart(year, flag, stateName){
     .attr("height", bar_height)
     .attr("fill", function(d){
       if(d.State === selectedState) {
-        return "#FFFAFA";
+        return "#ced119";
       } else if (d.State === stateName) {
-        return "#FFFAFA";
+        return "#ced119";
       } else {
         return colorScale(d.Deaths);
       }

@@ -24,7 +24,7 @@ var pie = d3.pie();
 
 var arc = d3.arc()
             .outerRadius(radius * 0.8)
-            .innerRadius(radius * 0.6)
+            .innerRadius(radius * 0.5)
             .cornerRadius(cornerRadius)
             .padAngle(padAngle);
 
@@ -33,9 +33,20 @@ var outerArc = d3.arc()
                   .innerRadius(radius * 0.9);
 var slice = selectsvg
       .selectAll('path');
+
+selectsvg.append('text')
+          .attr('class', 'toolCircle')
+          .attr('dy', -25)
+          .attr('dx', -8)
+          .text("Total")
+          .style('font-size', '1.1em')
+          .style('text-anchor', 'middle')
+          .style("stroke", "white")
+          .style("fill", "white")
+
 var pieText = selectsvg.append('text')
                       .attr('class', 'toolCircle')
-                      .attr('dy', 0)
+                      .attr('dy', 10)
                       .style('font-size', '2.0em')
                       .style('text-anchor', 'middle')
                       .style("stroke", "white")

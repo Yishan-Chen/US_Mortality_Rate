@@ -57,10 +57,7 @@ body {
 }
 
 .axis text{
-  /*font-family: "sans serif";*/
-  /*font-size: 30;*/
   font-size: 15;
-  /*fill: white;*/
   opacity: 1;
 }
 
@@ -68,10 +65,6 @@ body {
   stroke: #FFFAFA;
   /*color: white;*/
 }
-
-/*.axis {
-  color: white;
-}*/
 
 .yaxis text{
   fill: white;
