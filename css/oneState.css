@@ -3,17 +3,14 @@ body {
 }
 #container {
     height: 100%;
+    width:100%;
 }
 
 #container2 {
-    height: 30%;
+    /*height: 30%;*/
     width: 100%;
     padding-left: 1%;
     display: inline-block;
-}
-
-#container {
-  width:100%;
 }
 
 #container1 .left {

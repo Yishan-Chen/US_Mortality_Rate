@@ -6,7 +6,7 @@ var liquid_disease = ["Heart disease","Cancer","Diabetes","Stroke", "CLRD"]
 var diseases_svg = {}
 var diseases_gauge = {}
 var circle_color = ["#910101","#c41f1f","#d35050","#f27b7b"];
-var wave_color = ["#b20101","#ba2525","#d16060","#f99f9f"];
+var wave_color = ["#b20101","#ba2525","#d16060","#f78a8a"];
 
 for(var i=0; i<4; i++){
     d3.select("#container2").append("svg").attr("width", 75).attr("height", height + margin.top + margin.bottom);
@@ -28,7 +28,7 @@ for(var i=0; i<4; i++){
     config.textVertPosition = 0.5;
     config.waveAnimateTime = 1000;
     config.waveCount = 4-i;
-    var gauge = loadLiquidFillGauge(liquid_disease[i].replace(/\s/g,""), 0, config);
+    var gauge = loadLiquidFillGauge(liquid_disease[i], 0, config);
 
     diseases_gauge[liquid_disease[i]] = gauge
 }
@@ -86,9 +86,10 @@ function liquidFillGaugeDefaultSettings(){
     };
 }
 
-function loadLiquidFillGauge(elementId, value, config) {
+function loadLiquidFillGauge(element, value, config) {
     if(config == null) config = liquidFillGaugeDefaultSettings();
 
+    var elementId = element.replace(/\s/g,"");
     var gauge = d3.select("#" + elementId);
     var radius = Math.min(parseInt(gauge.style("width")), parseInt(gauge.style("height")))/2;
     var locationX = parseInt(gauge.style("width"))/2 - radius;
@@ -173,6 +174,16 @@ function loadLiquidFillGauge(elementId, value, config) {
         .style("fill", config.textColor)
         .attr('transform','translate('+radius+','+textRiseScaleY(config.textVertPosition)+')');
 
+    var disease_text_trans = radius - 5;
+    var typeText1 = gaugeGroup.append("text")
+          .attr("class", "liquidFillGaugeText")
+          .attr("font-family", "sans-serif")
+          .attr("font-size", "15 px")
+          .attr("text-anchor", "middle")
+          .style("fill", config.textColor)
+          .text(element)
+          .attr('transform','translate('+disease_text_trans+','+textRiseScaleY(config.textVertPosition+0.2)+')');
+
     // The clipping wave area.
     var clipArea = d3.area()
         .x(function(d) { return waveScaleX(d.x); } )
@@ -203,6 +214,15 @@ function loadLiquidFillGauge(elementId, value, config) {
         .attr("font-size", textPixels + "px")
         .style("fill", config.waveTextColor)
         .attr('transform','translate('+radius+','+textRiseScaleY(config.textVertPosition)+')');
+
+    var typeText2 = fillCircleGroup.append("text")
+          .text(element)
+          .attr("class", "liquidFillGaugeText")
+          .attr("text-anchor", "middle")
+          .attr("font-family", "sans-serif")
+          .attr("font-size", "15 px")
+          .style("fill", config.waveTextColor)
+          .attr('transform','translate('+disease_text_trans+','+textRiseScaleY(config.textVertPosition-20)+')');
 
     // Make the wave rise. wave and waveGroup are separate so that horizontal and vertical movement can be controlled independently.
     var waveGroupXPosition = fillCircleMargin+fillCircleRadius*2-waveClipWidth;
@@ -245,7 +265,6 @@ function loadLiquidFillGauge(elementId, value, config) {
                 // .tween("text", textTween);
 
             var fillPercent = Math.max(config.minValue, Math.min(config.maxValue, value))/config.maxValue;
-            console.log(fillPercent);
             var waveHeight = fillCircleRadius*waveHeightScale(fillPercent*100);
             var waveRiseScale = d3.scaleLinear()
                 // The clipping area size is the height of the fill circle + the wave height, so we position the clip wave
