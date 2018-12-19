@@ -1,14 +1,14 @@
-var margin = {top: 30, right: 20, bottom: 20, left: 20};
+var margin = {top: 0, right: 20, bottom: 20, left: 20};
 
 var width = 380 - margin.left - margin.right,
-    height = 380 - margin.top - margin.bottom;
+    height = 300 - margin.top - margin.bottom;
 
 var selectsvg = d3.select("#select").append("svg")
 .attr("id", "selectB")
 .attr("width", width + margin.left + margin.right)
 .attr("height", height + margin.top + margin.bottom)
 .append("g")
-.attr("transform", "translate(" + (width/2 + margin.left) + "," + (height/2 + margin.top) + ")");
+.attr("transform", "translate(150,150)");
 
 var cornerRadius = 3;
 var padAngle = 0.015;
@@ -18,7 +18,7 @@ var percentFormat = d3.format(',.2%');
 var colorScale = d3.scaleOrdinal()
 .range(["#770000", "#696969"]);
 
-var radius = Math.min(width, height) / 2;
+var radius = Math.max(width, height) / 2;
 
 var pie = d3.pie();
 

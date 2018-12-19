@@ -1,25 +1,38 @@
-var margin = {top: 20, right: 20, bottom: 20, left: 120};
+var margin = {top: 20, right: 10, bottom: 20, left: 20};
 
 var width = 300 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
+var liquid_disease = ["Heart disease","Cancer","Diabetes","Stroke", "CLRD"]
+var diseases_svg = {}
+var diseases_gauge = {}
+var circle_color = ["#910101","#c41f1f","#d35050","#f27b7b"];
+var wave_color = ["#b20101","#ba2525","#d16060","#f99f9f"];
 
-d3.select("#container2").append("svg")
-.attr("id", "liquid1")
-.attr("width", width + margin.left + margin.right)
-.attr("height", height + margin.top + margin.bottom)
-.append("g")
-.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+for(var i=0; i<4; i++){
+    d3.select("#container2").append("svg").attr("width", 75).attr("height", height + margin.top + margin.bottom);
+    var svg = d3.select("#container2").append("svg")
+                .attr("id", liquid_disease[i].replace(/\s/g,""))
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g")
+                .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var config1 = liquidFillGaugeDefaultSettings();
-config1.circleColor = "#FF7777";
-config1.textColor = "#FF4444";
-config1.waveTextColor = "#FFAAAA";
-config1.waveColor = "#FFDDDD";
-config1.circleThickness = 0.2;
-config1.textVertPosition = 0.5;
-config1.waveAnimateTime = 1000;
-var gauge1 = loadLiquidFillGauge("liquid1", 0, config1);
-// config1.waveAnimate = true;
+    diseases_svg[liquid_disease[i]] = svg;
+
+    var config = liquidFillGaugeDefaultSettings();
+    config.circleColor = circle_color[i];
+    config.textColor = wave_color[i];
+    config.waveTextColor = "#FFAAAA";
+    config.waveColor = wave_color[i];
+    config.circleThickness = 0.1;
+    config.textVertPosition = 0.5;
+    config.waveAnimateTime = 1000;
+    config.waveCount = 4-i;
+    var gauge = loadLiquidFillGauge(liquid_disease[i].replace(/\s/g,""), 0, config);
+
+    diseases_gauge[liquid_disease[i]] = gauge
+}
+
 
 function updateLiquid(year, states){
     var csvFile = "data/NCHS_-_Leading_Causes_of_Death__United_States.csv";
@@ -29,27 +42,21 @@ function updateLiquid(year, states){
         if(error){
           throw error;
         } else {
-
-            var data = csv.filter(csv => csv.Year === year && csv.CauseName === "Cancer");
-            data.forEach(function(d){
-                for(var i=0; i<states.length;i++){
-                  if(states[i] === d.State){
-                    cumulative = cumulative + parseFloat(d.Deaths);
-                  }
-                }
-                if(d.State === "United States") {
-                  total = parseFloat(d.Deaths);
-                }
-          });
-          // d3.select("#liquid1").remove();
-          // d3.select("#container2").append("svg")
-          //   .attr("id", "liquid1")
-          //   .attr("width", width + margin.left + margin.right)
-          //   .attr("height", height + margin.top + margin.bottom)
-          //   .append("g")
-          //   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-          // var gauge1 = loadLiquidFillGauge("liquid1", 0, config1);
-          gauge1.update(cumulative/total);
+            for(var i=0; i<4; i++){ 
+                var cumulative = 0;
+                var data = csv.filter(csv => csv.Year === year && csv.CauseName === liquid_disease[i]);
+                data.forEach(function(d){
+                    for(var i=0; i<states.length;i++){
+                      if(states[i] === d.State){
+                        cumulative = cumulative + parseFloat(d.Deaths);
+                      }
+                    }
+                    if(d.State === "United States") {
+                      total = parseFloat(d.Deaths);
+                    }
+              });
+            diseases_gauge[liquid_disease[i]].update(cumulative/total);
+            }
         }
     });
 }
@@ -113,16 +120,6 @@ function loadLiquidFillGauge(elementId, value, config) {
     var waveClipCount = 1+config.waveCount;
     var waveClipWidth = waveLength*waveClipCount;
 
-    // Rounding functions so that the correct number of decimal places is always displayed as the value counts up.
-    // var textRounder = function(value){ return Math.round(value); };
-    // if(parseFloat(textFinalValue) != parseFloat(textRounder(textFinalValue))){
-    //     textRounder = function(value){ return parseFloat(value).toFixed(1); };
-    // }
-    // if(parseFloat(textFinalValue) != parseFloat(textRounder(textFinalValue))){
-    //     textRounder = function(value){ return parseFloat(value).toFixed(2); };
-    // }
-
-    // Data for building the clip wave area.
     var data = [];
     for(var i = 0; i <= 40*waveClipCount; i++){
         data.push({x: i/(40*waveClipCount), y: (i/(40))});
@@ -207,20 +204,6 @@ function loadLiquidFillGauge(elementId, value, config) {
         .style("fill", config.waveTextColor)
         .attr('transform','translate('+radius+','+textRiseScaleY(config.textVertPosition)+')');
 
-    // Make the value count up.
-    // if(config.valueCountUp){
-    //     var textTween = function(){
-    //         var i = d3.interpolate(this.textContent, textFinalValue);
-    //         return function(t) { this.textContent = textRounder(i(t)) + percentText; }
-    //     };
-    //     text1.transition()
-    //         .duration(config.waveRiseTime)
-    //         .tween("text", textTween);
-    //     text2.transition()
-    //         .duration(config.waveRiseTime)
-    //         .tween("text", textTween);
-    // }
-
     // Make the wave rise. wave and waveGroup are separate so that horizontal and vertical movement can be controlled independently.
     var waveGroupXPosition = fillCircleMargin+fillCircleRadius*2-waveClipWidth;
     if(config.waveRise){
@@ -251,20 +234,6 @@ function loadLiquidFillGauge(elementId, value, config) {
     function GaugeUpdater(){
         this.update = function(value){
             var newFinalValue = parseFloat(value*100).toFixed(1);
-            // var textRounderUpdater = function(value){ return Math.round(value); };
-            // if(parseFloat(newFinalValue) != parseFloat(textRounderUpdater(newFinalValue))){
-            //     textRounderUpdater = function(value){ return parseFloat(value).toFixed(1); };
-            // }
-            // if(parseFloat(newFinalValue) != parseFloat(textRounderUpdater(newFinalValue))){
-            //     textRounderUpdater = function(value){ return parseFloat(value).toFixed(2); };
-            // }
-
-            // var textTween = function(){
-            //     var i = d3.interpolate(this.textContent, parseFloat(value).toFixed(2));
-            //     return function(t) { this.textContent = textRounderUpdater(i(t)) + percentText; 
-            //         console.log(this.textContent);
-            //     }
-            // };
 
             text1.transition()
                 .duration(config.waveRiseTime)

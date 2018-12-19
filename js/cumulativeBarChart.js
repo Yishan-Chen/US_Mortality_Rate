@@ -1,7 +1,7 @@
 var margin = {top: 20, right: 20, bottom: 20, left: 120};
 
 var width = 900 - margin.left - margin.right,
-    height = 1000 - margin.top - margin.bottom;
+    height = 900 - margin.top - margin.bottom;
 
 var cumulativesvg = d3.select("#cumulative").append("svg")
 .attr("id", "cumulativeB")

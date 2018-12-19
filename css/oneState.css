@@ -1,40 +1,59 @@
 body {
-  background-color: white;
+  background-color: black;
 }
-#container, .left, .right {
-    height: 80%;
+#container {
+    height: 100%;
+}
+
+#container2 {
+    height: 30%;
+    width: 100%;
+    padding-left: 1%;
+    display: inline-block;
 }
 
 #container {
   width:100%;
 }
 
-#container .left {
+#container1 .left {
   position: relative;
   float: left;
   width: 40%;
-  height: 1000px;
+  height: 750px;
 }
 
-#container .right{
+#container1 .right{
   position: relative;
   float: right;
   width: 60%;
+  height: 750px;
   /*margin-left: 10px;*/
 }
 
-#container .top{
+#container1 .top{
   position: absolute;
   top: 0;
+}
+
+#container1 .bottom{
+  position: absolute;
+  bottom: 0;
+}
+
+#select {
+  margin-left: 20%;
+  /*margin-bottom: 40%;*/
+}
+
+#canvas {
   margin-left: 10%;
 }
 
-#container .bottom{
-  position: absolute;
-  bottom: 0;
+#liquid {
   margin-left: 20%;
-  margin-bottom: 40%;
 }
+
 .tick {
   opacity: 1;
   stroke: #FFFAFA;
