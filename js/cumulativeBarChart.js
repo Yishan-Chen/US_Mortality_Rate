@@ -22,6 +22,7 @@ var x = d3.scaleLinear()
 var xAxis = d3.axisTop(x).scale(x);
 var xAxisGroup = cumulativesvg.append("g")
                               .attr("transform", "translate(35,0)")
+                              .attr("fill", "white")
                               .call(xAxis);
 var diseases_dict = {}
 var num_dict = {}
