@@ -13,21 +13,21 @@ var rectScale = d3.scaleLinear()
                   .domain([0, 11])
                   .range([0,width]);
 
-var scaleSvg = d3.select("#canvas-svg").append('svg')
-                   .attr('width', width)
-                   .attr('height', 40)
-                   .append('g')
-                   .attr("transform", "translate(" + this.margin.left + ",0)");
+// var scaleSvg = d3.select("#canvas-svg").append('svg')
+//                    .attr('width', width)
+//                    .attr('height', 40)
+//                    .append('g')
+//                    .attr("transform", "translate(" + this.margin.left + ",0)");
 
-scaleSvg.selectAll('rect')
-            .data(scaleRange)
-            .enter()
-            .append('rect')
-            .attr('x', function(d,i){return rectScale(i);})
-            .attr('y', 0)
-            .attr('width', rectWidth)
-            .attr('height', 10)
-            .attr('fill', function(d){return d});
+// scaleSvg.selectAll('rect')
+//             .data(scaleRange)
+//             .enter()
+//             .append('rect')
+//             .attr('x', function(d,i){return rectScale(i);})
+//             .attr('y', 0)
+//             .attr('width', rectWidth)
+//             .attr('height', 10)
+//             .attr('fill', function(d){return d});
 
 // scaleSvg.selectAll('text')
 //     .data(range)
@@ -124,7 +124,7 @@ function updateGraph(year, flag){
         .style("fill", function(d) {
             var stateName = id_name_map[d.id];
             if(stateName === selectedState){
-              return "#FFFAFA";
+              return "#ced119";
             } else {
               var color = state_color_map[stateName];
               if (color){return color;} else {return "";}
