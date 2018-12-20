@@ -29,6 +29,7 @@ $(function(){
     yearNumber = String(d3.timeFormat('%Y')(val));
     states = [];
     // d3.selectAll("#selectB").remove();
+    d3.select("#childSVG").remove();
     selectPieChart(yearNumber,[]);
     cumulativeBarChart(yearNumber, []);
     initialLiquid();

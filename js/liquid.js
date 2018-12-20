@@ -11,6 +11,7 @@ var wave_color = ["#b20101","#ba2525","#d16060","#f78a8a"];
 initialLiquid();
 
 function initialLiquid(){
+    d3.select("#container2").selectAll("svg > *").remove();
     for(var i=0; i<4; i++){
         d3.select("#container2").append("svg").attr("width", 75).attr("height", height + margin.top + margin.bottom);
         var svg = d3.select("#container2").append("svg")
